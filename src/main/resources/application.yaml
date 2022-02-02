@@ -1,0 +1,7 @@
+server:
+  port: 9090
+spring:
+  application:
+    name: cyber-done-cloud-gateway
+security:
+  jwt-secret: ${JWT_SECRET}
