@@ -1,5 +1,5 @@
 server:
-  port: 9090
+  port: ${PORT:9090}
 spring:
   application:
     name: cyber-done-cloud-gateway
