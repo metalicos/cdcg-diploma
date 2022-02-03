@@ -56,7 +56,7 @@ pipeline {
             } catch (Exception e) {
               echo "${IMAGE}_" + i + "-${VERSION} container is not running."
             }
-            bat "docker run -d -t -i -e CDDS_DB_PASSWORD=\"${CDDS_DB_PASSWORD}\" -e CDDS_DB_USERNAME=\"${CDDS_DB_USERNAME}\" -e CDDS_DB_URL=\"${CDDS_DB_URL}\" -e JWT_SECRET=\"${JWT_SECRET}\" -e CDDS_MESSAGE_ENCRYPTIN_SECRET=\"${CDDS_MESSAGE_ENCRYPTIN_SECRET}\" -e CDDS_MQTT_USERNAME=\"${CDDS_MQTT_USERNAME}\" -e CDDS_MQTT_PASSWORD=\"${CDDS_MQTT_PASSWORD}\" -e CDDS_MQTT_SERVER_URL=\"${CDDS_MQTT_SERVER_URL}\" -p 7080:5555 --name=${IMAGE}_" + i + "-${VERSION} ${IMAGE}"
+            bat "docker run -d -t -i -e CDDS_DB_PASSWORD=\"${CDDS_DB_PASSWORD}\" -e CDDS_DB_USERNAME=\"${CDDS_DB_USERNAME}\" -e CDDS_DB_URL=\"${CDDS_DB_URL}\" -e JWT_SECRET=\"${JWT_SECRET}\" -e CDDS_MESSAGE_ENCRYPTIN_SECRET=\"${CDDS_MESSAGE_ENCRYPTIN_SECRET}\" -e CDDS_MQTT_USERNAME=\"${CDDS_MQTT_USERNAME}\" -e CDDS_MQTT_PASSWORD=\"${CDDS_MQTT_PASSWORD}\" -e CDDS_MQTT_SERVER_URL=\"${CDDS_MQTT_SERVER_URL}\" -p 909" + i + ":9090 --name=${IMAGE}_" + i + "-${VERSION} ${IMAGE}"
           }
           echo "=============================== DEPLOY SUCCESSFUL =================================="
         }
