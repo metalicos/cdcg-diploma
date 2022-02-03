@@ -1,6 +1,7 @@
 package ua.com.cyberdone.cloudgateway.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,6 +21,8 @@ import ua.com.cyberdone.cloudgateway.model.accountmicroservice.role.CreateRoleDt
 import ua.com.cyberdone.cloudgateway.model.accountmicroservice.role.RoleDto;
 import ua.com.cyberdone.cloudgateway.model.accountmicroservice.role.RolesDto;
 
+import static org.springframework.http.HttpHeaders.*;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/roles")
@@ -28,7 +31,7 @@ public class RoleController implements RoleApi {
 
     @GetMapping
     @PreAuthorize("hasAnyAuthority('r_all','r_accounts')")
-    public ResponseEntity<RolesDto> readRoles(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+    public ResponseEntity<RolesDto> readRoles(@RequestHeader(AUTHORIZATION) String token,
                                               @RequestParam(defaultValue = "0") int page,
                                               @RequestParam(defaultValue = "20") int size,
                                               @RequestParam(defaultValue = "NONE") String direction,
@@ -38,7 +41,7 @@ public class RoleController implements RoleApi {
 
     @GetMapping("/{role-name}")
     @PreAuthorize("hasAnyAuthority('r_all','r_account','r_self')")
-    public ResponseEntity<RoleDto> readRole(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+    public ResponseEntity<RoleDto> readRole(@RequestHeader(AUTHORIZATION) String token,
                                             @PathVariable(value = "role-name") String roleName)
             throws NotFoundException {
         return accountFeignClient.readRole(token, roleName);
@@ -46,19 +49,19 @@ public class RoleController implements RoleApi {
 
     @DeleteMapping
     @PreAuthorize("hasAnyAuthority('d_all','d_accounts')")
-    public ResponseEntity<String> deleteRoles(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+    public ResponseEntity<String> deleteRoles(@RequestHeader(AUTHORIZATION) String token) {
         return accountFeignClient.deleteRoles(token);
     }
 
     @DeleteMapping("/{role-name}")
     @PreAuthorize("hasAnyAuthority('d_all','d_account','d_self')")
-    public ResponseEntity<String> deleteRole(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+    public ResponseEntity<String> deleteRole(@RequestHeader(AUTHORIZATION) String token,
                                              @PathVariable(value = "role-name") String roleName) {
         return accountFeignClient.deleteRole(token, roleName);
     }
 
     @PostMapping
-    public ResponseEntity<RoleDto> createRole(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+    public ResponseEntity<RoleDto> createRole(@RequestHeader(AUTHORIZATION) String token,
                                               @RequestBody CreateRoleDto createRoleDto)
             throws AlreadyExistException, NotFoundException {
         return accountFeignClient.createRole(token, createRoleDto);

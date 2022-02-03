@@ -14,11 +14,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 @Slf4j
 @RequiredArgsConstructor
 public abstract class AuthenticationFilter extends OncePerRequestFilter {
-
-    public static final String AUTHORIZATION = HttpHeaders.AUTHORIZATION;
     public static final String BEARER = "Bearer ";
     protected final JwtService jwtService;
     protected Set<Role> roles;

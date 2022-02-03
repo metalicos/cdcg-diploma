@@ -37,7 +37,7 @@ import java.io.IOException;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
-@FeignClient(name = "cdas", url = "${feign.cdas.url}")
+@FeignClient(value = "cyber-done-account-microservice")
 public interface AccountMicroserviceFeignClient {
 
     /*
