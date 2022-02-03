@@ -18,7 +18,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public abstract class AuthenticationFilter extends OncePerRequestFilter {
 
-    public static final String AUTHORIZATION = "Authorization";
+    public static final String AUTHORIZATION = HttpHeaders.AUTHORIZATION;
     public static final String BEARER = "Bearer ";
     protected final JwtService jwtService;
     protected Set<Role> roles;
