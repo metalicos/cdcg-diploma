@@ -50,7 +50,6 @@ public class ExceptionHandlerController {
                     "   \"exception\": \"NullPointerException\",\n" +
                     "   \"detail\": \"The resource is null or empty\",\n" +
                     "}")))
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<RestError> noHandlerFoundException(NullPointerException exception) {
         return new ResponseEntity<>(RestError.builder()

@@ -27,9 +27,15 @@ public class OpenApiConfig {
                         .title("Cyberdone Cloud Gateway Microservice API")
                         .version(applicationVersion)
                         .description("""
-                                Cloud Gateway Microservice - entry point to cyberdone microservices.
-                                It redirects your calls to one of cyberdone microservices (Account Microservice,
-                                Device Microservice, Message Microservice)
+                                <strong>Cloud Gateway Microservice - entry point to Cyber Done microservices.
+                                It redirects your calls to one of Cyber Done microservices (Account Microservice,
+                                Device Microservice, Message Microservice etc.) To use capabilities of these microservices
+                                you should:</strong>
+                                <br><strong>1.</strong> Create your account. (Not need to pass JWT)
+                                <br><strong>2.</strong> Login to your account and save JWT token (from payload) generated after your login.
+                                <br><strong>3.</strong> Transmit JWT with Authorization header.
+                                <br><strong><i> Example: Authorization: Bearer <token>
+                                <br><strong>4.</strong> Make request to needed service using API documentation.
                                 """))
                 .servers(List.of(openApiServer()));
     }

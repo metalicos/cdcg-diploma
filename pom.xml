@@ -7,12 +7,12 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.6.3</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
     <groupId>ua.com.cyberdone</groupId>
     <artifactId>CloudGateway</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>CloudGateway</name>
     <description>CloudGateway</description>
 
@@ -72,6 +72,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${spring.doc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-data-rest</artifactId>
+            <version>${spring.doc.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
@@ -135,7 +145,7 @@
                 </executions>
                 <configuration>
                     <outputFileName>openapi.json</outputFileName>
-                    <apiDocsUrl>http://localhost:5555/v3/api-docs</apiDocsUrl>
+                    <apiDocsUrl>http://localhost:9090/v3/api-docs</apiDocsUrl>
                     <outputDir>${project.build.directory}</outputDir>
                     <goal>generate</goal>
                 </configuration>

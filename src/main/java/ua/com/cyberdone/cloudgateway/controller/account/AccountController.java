@@ -1,4 +1,4 @@
-package ua.com.cyberdone.cloudgateway.controller;
+package ua.com.cyberdone.cloudgateway.controller.account;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import ua.com.cyberdone.cloudgateway.constant.Regex;
-import ua.com.cyberdone.cloudgateway.controller.docs.AccountApi;
+import ua.com.cyberdone.cloudgateway.documentation.account.AccountApi;
 import ua.com.cyberdone.cloudgateway.exception.AccessDeniedException;
 import ua.com.cyberdone.cloudgateway.exception.AlreadyExistException;
 import ua.com.cyberdone.cloudgateway.exception.AuthenticationException;
