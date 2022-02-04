@@ -24,7 +24,7 @@ import java.util.List;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
-@FeignClient("cyber-done-device-microservice")
+@FeignClient(value = "cyber-done-device-microservice")
 public interface DeviceMicroserviceFeignClient {
 
     //          METADATA CONTROLLER CALLS
