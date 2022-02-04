@@ -13,7 +13,7 @@ import javax.validation.constraints.Pattern;
         "    \"token\":\"Bearer eyJhbGciOiJIUzUxMiJ9.eyJzd.WIiOiJvc3RhcC5qYUBnbWFpbC5jb20\"\n" +
         "}")
 public class LogoutDto {
-    @Pattern(regexp = Regex.TOKEN_WITH_TYPE,
+    @Pattern(regexp = Regex.TOKEN_WITH_TYPE_RGX,
             message = Regex.TOKEN_FAIL_MESSAGE)
     private String token;
 }

@@ -16,19 +16,19 @@ import javax.validation.constraints.Pattern;
         "    \"patronymic\": \"D'Amanti\"\n" +
         "}")
 public class ChangeFullNameDto {
-    @Pattern(regexp = Regex.EMAIL,
+    @Pattern(regexp = Regex.EMAIL_RGX,
             message = Regex.EMAIL_FAIL_MESSAGE)
     private String username;
 
-    @Pattern(regexp = Regex.FIRST_NAME,
+    @Pattern(regexp = Regex.NAME_RGX,
             message = Regex.FIRST_NAME_FAIL_MESSAGE)
     private String firstName;
 
-    @Pattern(regexp = Regex.LAST_NAME,
+    @Pattern(regexp = Regex.NAME_RGX,
             message = Regex.LAST_NAME_FAIL_MESSAGE)
     private String lastName;
 
-    @Pattern(regexp = Regex.PATRONYMIC,
+    @Pattern(regexp = Regex.NAME_RGX,
             message = Regex.PATRONYMIC_FAIL_MESSAGE)
     private String patronymic;
 }

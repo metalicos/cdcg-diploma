@@ -126,7 +126,7 @@ public class AccountController implements AccountApi {
     @PutMapping("/{username}/change/image")
     @PreAuthorize("hasAnyAuthority('u_all','u_images','u_self')")
     public ResponseEntity<String> changeImage(@RequestHeader(AUTHORIZATION) String token,
-                                              @Pattern(regexp = Regex.EMAIL, message = Regex.EMAIL_FAIL_MESSAGE)
+                                              @Pattern(regexp = Regex.EMAIL_RGX, message = Regex.EMAIL_FAIL_MESSAGE)
                                               @PathVariable String username, @RequestParam MultipartFile file)
             throws NotFoundException, IOException, AlreadyExistException {
         return accountFeignClient.changeImage(token, username, file);

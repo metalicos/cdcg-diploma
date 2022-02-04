@@ -14,11 +14,11 @@ import javax.validation.constraints.Pattern;
         "    \"password\": \"2022h@tD@g\"\n" +
         "}")
 public class LoginDto {
-    @Pattern(regexp = Regex.EMAIL,
+    @Pattern(regexp = Regex.EMAIL_RGX,
             message = Regex.EMAIL_FAIL_MESSAGE)
     private String username;
 
-    @Pattern(regexp = Regex.PASSWORD,
+    @Pattern(regexp = Regex.PASSWORD_RGX,
             message = Regex.PASSWORD_FAIL_MESSAGE)
     private String password;
 }

@@ -20,7 +20,12 @@ import ua.com.cyberdone.cloudgateway.model.accountmicroservice.permission.Create
 import ua.com.cyberdone.cloudgateway.model.accountmicroservice.permission.PermissionDto;
 import ua.com.cyberdone.cloudgateway.model.accountmicroservice.permission.PermissionsDto;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
+
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static ua.com.cyberdone.cloudgateway.constant.Regex.PERMISSION_NAME_FAIL_MESSAGE;
+import static ua.com.cyberdone.cloudgateway.constant.Regex.PERMISSION_NAME_RGX;
 
 @RestController
 @RequiredArgsConstructor
@@ -48,21 +53,22 @@ public class PermissionController implements PermissionApi {
     @DeleteMapping
     @PreAuthorize("hasAnyAuthority('d_all','d_permissions')")
     public ResponseEntity<String> deletePermissions(@RequestHeader(AUTHORIZATION) String token) {
-
         return accountFeignClient.deletePermissions(token);
     }
 
     @DeleteMapping("/{name}")
-    @PreAuthorize("hasAnyAuthority('d_all','d_permissions')")
-    public ResponseEntity<String> deletePermission(@RequestHeader(AUTHORIZATION) String token,
-                                                   @PathVariable String name) {
+    @PreAuthorize("hasAnyAuthority('d_all','d_permission')")
+    public ResponseEntity<String> deletePermission(
+            @RequestHeader(AUTHORIZATION) String token,
+            @Pattern(regexp = PERMISSION_NAME_RGX, message = PERMISSION_NAME_FAIL_MESSAGE)
+            @PathVariable String name) {
         return accountFeignClient.deletePermission(token, name);
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyAuthority('w_all','w_permissions')")
+    @PreAuthorize("hasAnyAuthority('w_all','w_permission')")
     public ResponseEntity<PermissionDto> createPermission(@RequestHeader(AUTHORIZATION) String token,
-                                                          @RequestBody CreatePermissionDto dto)
+                                                          @RequestBody @Valid CreatePermissionDto dto)
             throws AlreadyExistException {
         return accountFeignClient.createPermission(token, dto);
     }

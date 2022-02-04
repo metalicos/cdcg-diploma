@@ -15,15 +15,15 @@ import javax.validation.constraints.Pattern;
         "    \"checkNewPassword\": \"!@#333rtrIODone\"\n" +
         "}")
 public class ChangePasswordDto {
-    @Pattern(regexp = Regex.EMAIL,
+    @Pattern(regexp = Regex.EMAIL_RGX,
             message = Regex.EMAIL_FAIL_MESSAGE)
     private String username;
 
-    @Pattern(regexp = Regex.PASSWORD,
+    @Pattern(regexp = Regex.PASSWORD_RGX,
             message = Regex.PASSWORD_FAIL_MESSAGE)
     private String newPassword;
 
-    @Pattern(regexp = Regex.PASSWORD,
+    @Pattern(regexp = Regex.PASSWORD_RGX,
             message = Regex.PASSWORD_FAIL_MESSAGE)
     private String checkNewPassword;
 }

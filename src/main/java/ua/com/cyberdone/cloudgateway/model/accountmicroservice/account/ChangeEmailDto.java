@@ -14,11 +14,11 @@ import javax.validation.constraints.Pattern;
         "    \"newEmail\": \"newone2022@gmail.com\"\n" +
         "}")
 public class ChangeEmailDto {
-    @Pattern(regexp = Regex.EMAIL,
+    @Pattern(regexp = Regex.EMAIL_RGX,
             message = Regex.EMAIL_FAIL_MESSAGE)
     private String oldEmail;
 
-    @Pattern(regexp = Regex.EMAIL,
+    @Pattern(regexp = Regex.EMAIL_RGX,
             message = Regex.EMAIL_FAIL_MESSAGE)
     private String newEmail;
 }
