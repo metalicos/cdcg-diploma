@@ -20,7 +20,7 @@ import ua.com.cyberdone.cloudgateway.model.accountmicroservice.role.CreateRoleDt
 import ua.com.cyberdone.cloudgateway.model.accountmicroservice.role.RoleDto;
 import ua.com.cyberdone.cloudgateway.model.accountmicroservice.role.RolesDto;
 
-import static org.springframework.http.HttpHeaders.*;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @RestController
 @RequiredArgsConstructor

@@ -3,10 +3,18 @@ package ua.com.cyberdone.cloudgateway.model.accountmicroservice.account;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import ua.com.cyberdone.cloudgateway.constant.Regex;
 
 import javax.validation.constraints.Pattern;
 import java.util.Set;
+
+import static ua.com.cyberdone.cloudgateway.constant.Regex.EMAIL_FAIL_MESSAGE;
+import static ua.com.cyberdone.cloudgateway.constant.Regex.EMAIL_RGX;
+import static ua.com.cyberdone.cloudgateway.constant.Regex.FIRST_NAME_FAIL_MESSAGE;
+import static ua.com.cyberdone.cloudgateway.constant.Regex.LAST_NAME_FAIL_MESSAGE;
+import static ua.com.cyberdone.cloudgateway.constant.Regex.NAME_RGX;
+import static ua.com.cyberdone.cloudgateway.constant.Regex.PASSWORD_FAIL_MESSAGE;
+import static ua.com.cyberdone.cloudgateway.constant.Regex.PASSWORD_RGX;
+import static ua.com.cyberdone.cloudgateway.constant.Regex.PATRONYMIC_FAIL_MESSAGE;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -22,20 +30,23 @@ import java.util.Set;
         "    ]\n" +
         "}")
 public class RegistrationDto {
-    @Pattern(regexp = Regex.EMAIL_RGX,
-            message = Regex.EMAIL_FAIL_MESSAGE)
+    @Pattern(regexp = EMAIL_RGX,
+            message = EMAIL_FAIL_MESSAGE)
     private String username;
-    @Pattern(regexp = Regex.PASSWORD_RGX,
-            message = Regex.PASSWORD_FAIL_MESSAGE)
+    @Pattern(regexp = PASSWORD_RGX,
+            message = PASSWORD_FAIL_MESSAGE)
     private String password;
-    @Pattern(regexp = Regex.NAME_RGX,
-            message = Regex.FIRST_NAME_FAIL_MESSAGE)
+    @Pattern(regexp = PASSWORD_RGX,
+            message = PASSWORD_FAIL_MESSAGE)
+    private String passwordCheck;
+    @Pattern(regexp = NAME_RGX,
+            message = FIRST_NAME_FAIL_MESSAGE)
     private String firstName;
-    @Pattern(regexp = Regex.NAME_RGX,
-            message = Regex.LAST_NAME_FAIL_MESSAGE)
+    @Pattern(regexp = NAME_RGX,
+            message = LAST_NAME_FAIL_MESSAGE)
     private String lastName;
-    @Pattern(regexp = Regex.NAME_RGX,
-            message = Regex.PATRONYMIC_FAIL_MESSAGE)
+    @Pattern(regexp = NAME_RGX,
+            message = PATRONYMIC_FAIL_MESSAGE)
     private String patronymic;
     private Set<String> roles;
 }

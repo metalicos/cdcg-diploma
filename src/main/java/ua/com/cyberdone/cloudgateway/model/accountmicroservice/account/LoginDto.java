@@ -3,9 +3,13 @@ package ua.com.cyberdone.cloudgateway.model.accountmicroservice.account;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import ua.com.cyberdone.cloudgateway.constant.Regex;
 
 import javax.validation.constraints.Pattern;
+
+import static ua.com.cyberdone.cloudgateway.constant.Regex.EMAIL_FAIL_MESSAGE;
+import static ua.com.cyberdone.cloudgateway.constant.Regex.EMAIL_RGX;
+import static ua.com.cyberdone.cloudgateway.constant.Regex.PASSWORD_FAIL_MESSAGE;
+import static ua.com.cyberdone.cloudgateway.constant.Regex.PASSWORD_RGX;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -14,11 +18,11 @@ import javax.validation.constraints.Pattern;
         "    \"password\": \"2022h@tD@g\"\n" +
         "}")
 public class LoginDto {
-    @Pattern(regexp = Regex.EMAIL_RGX,
-            message = Regex.EMAIL_FAIL_MESSAGE)
+    @Pattern(regexp = EMAIL_RGX,
+            message = EMAIL_FAIL_MESSAGE)
     private String username;
 
-    @Pattern(regexp = Regex.PASSWORD_RGX,
-            message = Regex.PASSWORD_FAIL_MESSAGE)
+    @Pattern(regexp = PASSWORD_RGX,
+            message = PASSWORD_FAIL_MESSAGE)
     private String password;
 }
