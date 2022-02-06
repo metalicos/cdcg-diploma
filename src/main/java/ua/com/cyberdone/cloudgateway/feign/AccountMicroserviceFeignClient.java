@@ -89,19 +89,19 @@ public interface AccountMicroserviceFeignClient {
             throws AccessDeniedException, NotFoundException, AlreadyExistException;
 
     @PutMapping("/accounts/change/password")
-    ResponseEntity<String> changePassword(@RequestBody @Valid ChangePasswordDto changePasswordDto)
+    ResponseEntity<String> changePassword(@RequestBody ChangePasswordDto changePasswordDto)
             throws NotFoundException;
 
     @PutMapping("/accounts/change/fullname")
     @PreAuthorize("hasAnyAuthority('u_all','u_accounts','u_self')")
     ResponseEntity<String> changeFullName(@RequestHeader(AUTHORIZATION) String token,
-                                          @RequestBody @Valid ChangeFullNameDto changeFullNameDto)
+                                          @RequestBody ChangeFullNameDto changeFullNameDto)
             throws NotFoundException;
 
     @PutMapping("/accounts/change/username")
     @PreAuthorize("hasAnyAuthority('u_all','u_accounts','u_self')")
     ResponseEntity<String> changeUsername(@RequestHeader(AUTHORIZATION) String token,
-                                          @RequestBody @Valid ChangeEmailDto changeEmailDto)
+                                          @RequestBody ChangeEmailDto changeEmailDto)
             throws NotFoundException, AlreadyExistException;
 
     @PutMapping("/accounts/{username}/change/image")
@@ -111,11 +111,11 @@ public interface AccountMicroserviceFeignClient {
             throws NotFoundException, IOException, AlreadyExistException;
 
     @PostMapping("/accounts/authentication/login")
-    ResponseEntity<TokenDto> login(@RequestBody @Valid LoginDto loginDto) throws AuthenticationException;
+    ResponseEntity<TokenDto> login(@RequestBody LoginDto loginDto) throws AuthenticationException;
 
     @PostMapping("/accounts/authentication/logout")
     ResponseEntity<TokenDto> logout(@RequestHeader(AUTHORIZATION) String token,
-                                    @RequestBody @Valid LogoutDto logoutDto);
+                                    @RequestBody LogoutDto logoutDto);
 
     /*
     ###

@@ -54,7 +54,12 @@ public class ExceptionHandlerController {
     @ExceptionHandler(FeignException.class)
     public ResponseEntity<RestError> handleFeignStatusException(FeignException e, HttpServletResponse response)
             throws JsonProcessingException {
-        var error = mapper.readValue(e.contentUTF8(), RestError.class);
+        var error = switch (e.status()) {
+            case 401 -> RestError.builder().error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
+                    .title(UNAUTHORIZED_MSG)
+                    .detail("Authentication failed: " + e.getMessage()).build();
+            default -> mapper.readValue(e.contentUTF8(), RestError.class);
+        };
         response.setStatus(e.status());
         log.error("{}", error);
         return new ResponseEntity<>(error, Optional.ofNullable(HttpStatus.resolve(e.status()))
@@ -66,7 +71,6 @@ public class ExceptionHandlerController {
                     "   \"timestamp\": \"2022-01-29T10:10:10.324Z\",\n" +
                     "   \"title\": \"" + NO_CONTENT_MSG + "\",\n" +
                     "   \"error\": \"204\",\n" +
-                    "   \"exception\": \"NullPointerException\",\n" +
                     "   \"detail\": \"The resource is null or empty\",\n" +
                     "}")))
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -86,7 +90,6 @@ public class ExceptionHandlerController {
                     "   \"timestamp\": \"2022-01-29T10:10:10.324Z\",\n" +
                     "   \"title\": \"" + BAD_REQUEST_MSG + "\",\n" +
                     "   \"error\": \"400\",\n" +
-                    "   \"exception\": \"ValidationException\",\n" +
                     "   \"detail\": \"Parameter 'token' must be not null.\",\n" +
                     "}")))
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -106,7 +109,6 @@ public class ExceptionHandlerController {
                     "   \"timestamp\": \"2022-01-29T10:10:10.324Z\",\n" +
                     "   \"title\": \"" + BAD_REQUEST_MSG + "\",\n" +
                     "   \"error\": \"400\",\n" +
-                    "   \"exception\": \"HttpClientErrorException\",\n" +
                     "   \"detail\": \"Clients request is of the wrong format. \",\n" +
                     "}")))
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -127,7 +129,6 @@ public class ExceptionHandlerController {
                     "   \"timestamp\": \"2022-01-29T10:10:10.324Z\",\n" +
                     "   \"title\": \"" + BAD_REQUEST_MSG + "\",\n" +
                     "   \"error\": \"400\",\n" +
-                    "   \"exception\": \"MethodArgumentNotValidException\",\n" +
                     "   \"detail\": \"Method argument is invalid.\",\n" +
                     "}")))
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -150,7 +151,6 @@ public class ExceptionHandlerController {
                     "   \"timestamp\": \"2022-01-29T10:10:10.324Z\",\n" +
                     "   \"title\": \"" + BAD_REQUEST_MSG + "\",\n" +
                     "   \"error\": \"400\",\n" +
-                    "   \"exception\": \"MethodArgumentTypeMismatchException\",\n" +
                     "   \"detail\": \"Method argument`s type is invalid.\",\n" +
                     "}")))
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -171,7 +171,6 @@ public class ExceptionHandlerController {
                     "   \"timestamp\": \"2022-01-29T10:10:10.324Z\",\n" +
                     "   \"title\": \"" + BAD_REQUEST_MSG + "\",\n" +
                     "   \"error\": \"400\",\n" +
-                    "   \"exception\": \"MissingServletRequestParameterException\",\n" +
                     "   \"detail\": \"Request parameter is missing\",\n" +
                     "}")))
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -191,7 +190,6 @@ public class ExceptionHandlerController {
                     "   \"timestamp\": \"2022-01-29T10:10:10.324Z\",\n" +
                     "   \"title\": \"" + BAD_REQUEST_MSG + "\",\n" +
                     "   \"error\": \"400\",\n" +
-                    "   \"exception\": \"HttpMessageNotReadableException\",\n" +
                     "   \"detail\": \"Request parameter is missing\",\n" +
                     "}")))
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -211,7 +209,6 @@ public class ExceptionHandlerController {
                     "   \"timestamp\": \"2022-01-29T10:10:10.324Z\",\n" +
                     "   \"title\": \"" + UNAUTHORIZED_MSG + "\",\n" +
                     "   \"error\": \"401\",\n" +
-                    "   \"exception\": \"AuthenticationException\",\n" +
                     "   \"detail\": \"Authentication failed: ...\",\n" +
                     "}")))
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
@@ -231,7 +228,6 @@ public class ExceptionHandlerController {
                     "   \"timestamp\": \"2022-01-29T10:10:10.324Z\",\n" +
                     "   \"title\": \"" + UNAUTHORIZED_MSG + "\",\n" +
                     "   \"error\": \"401\",\n" +
-                    "   \"exception\": \"ExpiredJwtException\",\n" +
                     "   \"detail\": \"JWT token is expired: ...\",\n" +
                     "}")))
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
@@ -251,7 +247,6 @@ public class ExceptionHandlerController {
                     "   \"timestamp\": \"2022-01-29T10:10:10.324Z\",\n" +
                     "   \"title\": \"" + UNAUTHORIZED_MSG + "\",\n" +
                     "   \"error\": \"401\",\n" +
-                    "   \"exception\": \"SignatureException\",\n" +
                     "   \"detail\": \"Bad JWT Signature:  ...\",\n" +
                     "}")))
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
@@ -271,7 +266,6 @@ public class ExceptionHandlerController {
                     "   \"timestamp\": \"2022-01-29T10:10:10.324Z\",\n" +
                     "   \"title\": \"" + UNAUTHORIZED_MSG + "\",\n" +
                     "   \"error\": \"401\",\n" +
-                    "   \"exception\": \"MalformedJwtException\",\n" +
                     "   \"detail\": \"Malformed Jwt:  ...\",\n" +
                     "}")))
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
@@ -291,7 +285,6 @@ public class ExceptionHandlerController {
                     "   \"timestamp\": \"2022-01-29T10:10:10.324Z\",\n" +
                     "   \"title\": \"" + UNAUTHORIZED_MSG + "\",\n" +
                     "   \"error\": \"401\",\n" +
-                    "   \"exception\": \"UnsupportedJwtException\",\n" +
                     "   \"detail\": \"Unsupported Jwt:  ...\",\n" +
                     "}")))
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
@@ -311,7 +304,6 @@ public class ExceptionHandlerController {
                     "   \"timestamp\": \"2022-01-29T10:10:10.324Z\",\n" +
                     "   \"title\": \"" + ACCESS_DENIED_MSG + "\",\n" +
                     "   \"error\": \"403\",\n" +
-                    "   \"exception\": \"AccessDeniedException\",\n" +
                     "   \"detail\": \"You have no permission to access the resource\",\n" +
                     "}")))
     @ResponseStatus(HttpStatus.FORBIDDEN)
@@ -331,7 +323,6 @@ public class ExceptionHandlerController {
                     "   \"timestamp\": \"2022-01-29T10:10:10.324Z\",\n" +
                     "   \"title\": \"" + NOT_FOUND_MSG + "\",\n" +
                     "   \"error\": \"404\",\n" +
-                    "   \"exception\": \"NoHandlerFoundException\",\n" +
                     "   \"detail\": \"Unsupported Jwt:  ...\",\n" +
                     "}")))
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -351,7 +342,6 @@ public class ExceptionHandlerController {
                     "   \"timestamp\": \"2022-01-29T10:10:10.324Z\",\n" +
                     "   \"title\": \"" + NOT_FOUND_MSG + "\",\n" +
                     "   \"error\": \"404\",\n" +
-                    "   \"exception\": \"NotFoundException\",\n" +
                     "   \"detail\": \"Unsupported Jwt:  ...\",\n" +
                     "}")))
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -371,7 +361,6 @@ public class ExceptionHandlerController {
                     "   \"timestamp\": \"2022-01-29T10:10:10.324Z\",\n" +
                     "   \"title\": \"" + CONFLICT_MSG + "\",\n" +
                     "   \"error\": \"409\",\n" +
-                    "   \"exception\": \"AlreadyExistException\",\n" +
                     "   \"detail\": \"Account already exists  ...\",\n" +
                     "}")))
     @ResponseStatus(HttpStatus.CONFLICT)
@@ -391,7 +380,6 @@ public class ExceptionHandlerController {
                     "   \"timestamp\": \"2022-01-29T10:10:10.324Z\",\n" +
                     "   \"title\": \"" + INTERNAL_SERVER_ERROR_MSG + "\",\n" +
                     "   \"error\": \"500\",\n" +
-                    "   \"exception\": \"InternalException\",\n" +
                     "   \"detail\": \"Server have problems to process your request\",\n" +
                     "}")))
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

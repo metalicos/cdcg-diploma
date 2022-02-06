@@ -23,8 +23,8 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/metadata")
-public class MetadataController implements DeviceMetadataApi {
+@RequestMapping("/device/metadata")
+public class DeviceMetadataController implements DeviceMetadataApi {
     private final DeviceMicroserviceFeignClient deviceFeignClient;
 
     @GetMapping

@@ -102,7 +102,7 @@ public class AccountController implements AccountApi {
     }
 
     @PutMapping("/change/password")
-    public ResponseEntity<String> changePassword(@RequestBody @Valid ChangePasswordDto changePasswordDto)
+    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordDto changePasswordDto)
             throws NotFoundException {
         return accountFeignClient.changePassword(changePasswordDto);
     }
@@ -110,7 +110,7 @@ public class AccountController implements AccountApi {
     @PutMapping("/change/fullname")
     @PreAuthorize("hasAnyAuthority('u_all','u_accounts','u_self')")
     public ResponseEntity<String> changeFullName(@RequestHeader(AUTHORIZATION) String token,
-                                                 @RequestBody @Valid ChangeFullNameDto changeFullNameDto)
+                                                 @RequestBody ChangeFullNameDto changeFullNameDto)
             throws NotFoundException {
         return accountFeignClient.changeFullName(token, changeFullNameDto);
     }
@@ -118,7 +118,7 @@ public class AccountController implements AccountApi {
     @PutMapping("/change/username")
     @PreAuthorize("hasAnyAuthority('u_all','u_accounts','u_self')")
     public ResponseEntity<String> changeUsername(@RequestHeader(AUTHORIZATION) String token,
-                                                 @RequestBody @Valid ChangeEmailDto changeEmailDto)
+                                                 @RequestBody ChangeEmailDto changeEmailDto)
             throws NotFoundException, AlreadyExistException {
         return accountFeignClient.changeUsername(token, changeEmailDto);
     }
@@ -133,13 +133,13 @@ public class AccountController implements AccountApi {
     }
 
     @PostMapping("/authentication/login")
-    public ResponseEntity<TokenDto> login(@RequestBody @Valid LoginDto loginDto) throws AuthenticationException {
+    public ResponseEntity<TokenDto> login(@RequestBody LoginDto loginDto) throws AuthenticationException {
         return accountFeignClient.login(loginDto);
     }
 
     @PostMapping("/authentication/logout")
     public ResponseEntity<TokenDto> logout(@RequestHeader(AUTHORIZATION) String token,
-                                           @RequestBody @Valid LogoutDto logoutDto) {
+                                           @RequestBody LogoutDto logoutDto) {
         return accountFeignClient.logout(token, logoutDto);
     }
 }

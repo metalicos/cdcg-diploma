@@ -28,36 +28,36 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 public interface DeviceMicroserviceFeignClient {
 
     //          METADATA CONTROLLER CALLS
-    @GetMapping("/metadata")
+    @GetMapping("/device/metadata")
     ResponseEntity<DeviceMetadataDto> getMetadataByUuid(@RequestHeader(AUTHORIZATION) String token,
                                                         @RequestParam String uuid);
 
-    @GetMapping("/metadata/list")
+    @GetMapping("/device/metadata/list")
     ResponseEntity<List<DeviceMetadataDto>> getMetadataByUser(@RequestHeader(AUTHORIZATION) String token,
                                                               @RequestParam Long userId);
 
-    @PatchMapping("/metadata")
+    @PatchMapping("/device/metadata")
     ResponseEntity<String> updateMetadata(@RequestHeader(AUTHORIZATION) String token,
                                           @RequestParam String uuid,
                                           @RequestParam String name,
                                           @RequestParam String description);
 
-    @PostMapping("/metadata")
+    @PostMapping("/device/metadata")
     ResponseEntity<DeviceMetadataDto> createMetadata(@RequestHeader(AUTHORIZATION) String token,
                                                      @RequestBody DeviceMetadataDto metadataDto);
 
-    @DeleteMapping("/metadata")
+    @DeleteMapping("/device/metadata")
     ResponseEntity<String> deleteMetadata(@RequestHeader(AUTHORIZATION) String token,
                                           @RequestParam String uuid);
 
-    @GetMapping("/metadata/device-types")
+    @GetMapping("/device/metadata/device-types")
     ResponseEntity<DeviceType[]> getDeviceTypesList(@RequestHeader(AUTHORIZATION) String token);
 
-    @PutMapping("/metadata/unlink")
+    @PutMapping("/device/metadata/unlink")
     ResponseEntity<String> unlinkMetadataFromUser(@RequestHeader(AUTHORIZATION) String token,
                                                   @RequestParam String uuid);
 
-    @PutMapping("/metadata/link")
+    @PutMapping("/device/metadata/link")
     ResponseEntity<String> linkMetadataToUser(@RequestHeader(AUTHORIZATION) String token,
                                               @RequestParam String uuid, @RequestParam Long userId);
 
