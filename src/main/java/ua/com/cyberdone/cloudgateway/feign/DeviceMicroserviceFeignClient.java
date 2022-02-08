@@ -36,7 +36,7 @@ public interface DeviceMicroserviceFeignClient {
     ResponseEntity<List<DeviceMetadataDto>> getMetadataByUser(@RequestHeader(AUTHORIZATION) String token,
                                                               @RequestParam Long userId);
 
-    @PatchMapping("/device/metadata")
+    @PutMapping("/device/metadata")
     ResponseEntity<String> updateMetadata(@RequestHeader(AUTHORIZATION) String token,
                                           @RequestParam String uuid,
                                           @RequestParam String name,
@@ -63,21 +63,20 @@ public interface DeviceMicroserviceFeignClient {
 
     //          SCHEDULE CONTROLLER CALLS
 
-
-    @PutMapping("/schedules")
+    @GetMapping("/device/regular/schedules")
     ResponseEntity<List<RegularScheduleDto>> getSchedulesByKey(@RequestHeader(AUTHORIZATION) String token,
                                                                @RequestParam String uuid,
                                                                @RequestParam String key);
 
-    @PutMapping("/schedules")
+    @PostMapping("/device/regular/schedules")
     ResponseEntity<RegularScheduleDto> createSchedule(@RequestHeader(AUTHORIZATION) String token,
                                                       @RequestBody RegularScheduleDto schedule);
 
-    @PatchMapping("/schedules")
+    @PutMapping("/device/regular/schedules")
     ResponseEntity<String> updateScheduleMetaInfo(@RequestHeader(AUTHORIZATION) String token,
                                                   @RequestBody RegularScheduleUpdateDto schedule);
 
-    @DeleteMapping("/schedules/{id}")
+    @DeleteMapping("/device/regular/schedules/{id}")
     ResponseEntity<String> deleteScheduleById(@RequestHeader(AUTHORIZATION) String token,
                                               @PathVariable("id") Long id);
 

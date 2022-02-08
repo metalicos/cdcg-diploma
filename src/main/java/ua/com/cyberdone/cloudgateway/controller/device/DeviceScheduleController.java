@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/schedules")
+@RequestMapping("/device/regular/schedules")
 public class DeviceScheduleController implements DeviceSchedulingApi {
     private final DeviceMicroserviceFeignClient deviceFeignClient;
 
@@ -41,7 +42,7 @@ public class DeviceScheduleController implements DeviceSchedulingApi {
         return deviceFeignClient.createSchedule(token, schedule);
     }
 
-    @PatchMapping
+    @PutMapping
     public ResponseEntity<String> updateScheduleMetaInfo(@RequestHeader(AUTHORIZATION) String token,
                                                          @Valid @RequestBody RegularScheduleUpdateDto schedule) {
         return deviceFeignClient.updateScheduleMetaInfo(token, schedule);
