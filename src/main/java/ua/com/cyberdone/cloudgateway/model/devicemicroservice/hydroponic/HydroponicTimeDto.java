@@ -16,6 +16,6 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class HydroponicTimeDto {
     private LocalDateTime microcontrollerTime;
-    private String microcontrollerTimeZone = "Europe/Kiev";
+    private String microcontrollerTimeZone = "+2:00";
     private String uuid;
 }

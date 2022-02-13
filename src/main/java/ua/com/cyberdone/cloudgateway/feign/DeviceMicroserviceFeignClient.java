@@ -4,7 +4,6 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,9 +16,11 @@ import ua.com.cyberdone.cloudgateway.model.devicemicroservice.RegularScheduleDto
 import ua.com.cyberdone.cloudgateway.model.devicemicroservice.RegularScheduleUpdateDto;
 import ua.com.cyberdone.cloudgateway.model.devicemicroservice.hydroponic.HydroponicCalibrationDataDto;
 import ua.com.cyberdone.cloudgateway.model.devicemicroservice.hydroponic.HydroponicDataDto;
+import ua.com.cyberdone.cloudgateway.model.devicemicroservice.hydroponic.HydroponicSettingTemplateDto;
 import ua.com.cyberdone.cloudgateway.model.devicemicroservice.hydroponic.HydroponicSettingsDto;
 import ua.com.cyberdone.cloudgateway.model.devicemicroservice.hydroponic.HydroponicTimeDto;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -112,6 +113,24 @@ public interface DeviceMicroserviceFeignClient {
                                                                                 @RequestParam String uuid,
                                                                                 @RequestParam(defaultValue = "0") Integer page,
                                                                                 @RequestParam(defaultValue = "15") Integer limit);
+
+    //        HYDROPONIC SETTING TEMPLATE CALLS
+
+    @GetMapping("/hydroponic/setting/template/last")
+    ResponseEntity<List<HydroponicSettingsDto>> getLastSettingTemplate(
+            @RequestHeader(AUTHORIZATION) String token, @RequestParam Integer page, @RequestParam Integer limit);
+
+    @PostMapping("/hydroponic/setting/template")
+    ResponseEntity<HydroponicSettingTemplateDto> createHydroponicSettingTemplate(
+            @RequestHeader(AUTHORIZATION) String token, HydroponicSettingTemplateDto dto);
+
+    @PutMapping("/hydroponic/setting/template")
+    ResponseEntity<String> updateHydroponicSettingTemplate(
+            @RequestHeader(AUTHORIZATION) String token, @Valid HydroponicSettingTemplateDto dto);
+
+    @DeleteMapping("/hydroponic/setting/template/{templateId}")
+    ResponseEntity<String> deleteHydroponicSettingTemplate(
+            @RequestHeader(AUTHORIZATION) String token, @PathVariable Long templateId);
 
     //        CONTROL HYDROPONICS CALLS
 
