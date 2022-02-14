@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -43,6 +44,7 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/error", method = RequestMethod.GET)
 public class ExceptionHandlerController {
     public static final String BAD_REQUEST_MSG = "The request does not follow the correct syntax";
+    public static final String NOT_ALLOWED_MSG = "No such methode exists in the server";
     public static final String INTERNAL_SERVER_ERROR_MSG = "There was an error processing the request.";
     public static final String NOT_FOUND_MSG = "Resource not found";
     public static final String ACCESS_DENIED_MSG = "Access denied";
@@ -58,6 +60,12 @@ public class ExceptionHandlerController {
             case 401 -> RestError.builder().error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
                     .title(UNAUTHORIZED_MSG)
                     .detail("Authentication failed: " + e.getMessage()).build();
+            case 403 -> RestError.builder().error(HttpStatus.FORBIDDEN.getReasonPhrase())
+                    .title(ACCESS_DENIED_MSG)
+                    .detail("Access denied: " + e.getMessage()).build();
+            case 405 -> RestError.builder().error(HttpStatus.METHOD_NOT_ALLOWED.getReasonPhrase())
+                    .title(NOT_ALLOWED_MSG)
+                    .detail("This methode not exists: " + e.getMessage()).build();
             default -> mapper.readValue(e.contentUTF8(), RestError.class);
         };
         response.setStatus(e.status());
@@ -354,6 +362,25 @@ public class ExceptionHandlerController {
                 .build();
         log.error("{}", error);
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ApiResponse(responseCode = "405", content = @Content(schema = @Schema(
+            example = "{\n" +
+                    "   \"timestamp\": \"2022-01-29T10:10:10.324Z\",\n" +
+                    "   \"title\": \"" + NOT_ALLOWED_MSG + "\",\n" +
+                    "   \"error\": \"405\",\n" +
+                    "   \"detail\": \"Methode not exists:  ...\",\n" +
+                    "}")))
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<RestError> noHandlerFoundException(HttpRequestMethodNotSupportedException exception) {
+        var error = RestError.builder()
+                .error(HttpStatus.METHOD_NOT_ALLOWED.getReasonPhrase())
+                .title(NOT_ALLOWED_MSG)
+                .detail(exception.getMessage())
+                .build();
+        log.error("{}", error);
+        return new ResponseEntity<>(error, HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     @ApiResponse(responseCode = "409", content = @Content(schema = @Schema(
