@@ -2,7 +2,6 @@ package ua.com.cyberdone.cloudgateway.controller.account;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,7 +33,6 @@ public class PermissionController implements PermissionApi {
     private final AccountMicroserviceFeignClient accountFeignClient;
 
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('r_all','r_permissions')")
     public ResponseEntity<PermissionsDto> readPermissions(@RequestHeader(AUTHORIZATION) String token,
                                                           @RequestParam(defaultValue = "0") int page,
                                                           @RequestParam(defaultValue = "20") int size,
@@ -44,20 +42,17 @@ public class PermissionController implements PermissionApi {
     }
 
     @GetMapping("/{name}")
-    @PreAuthorize("hasAnyAuthority('r_all','r_permission')")
     public ResponseEntity<PermissionDto> readPermission(@RequestHeader(AUTHORIZATION) String token,
                                                         @PathVariable String name) throws NotFoundException {
         return accountFeignClient.readPermission(token, name);
     }
 
     @DeleteMapping
-    @PreAuthorize("hasAnyAuthority('d_all','d_permissions')")
     public ResponseEntity<String> deletePermissions(@RequestHeader(AUTHORIZATION) String token) {
         return accountFeignClient.deletePermissions(token);
     }
 
     @DeleteMapping("/{name}")
-    @PreAuthorize("hasAnyAuthority('d_all','d_permission')")
     public ResponseEntity<String> deletePermission(
             @RequestHeader(AUTHORIZATION) String token,
             @Pattern(regexp = PERMISSION_NAME_RGX, message = PERMISSION_NAME_FAIL_MESSAGE)
@@ -66,7 +61,6 @@ public class PermissionController implements PermissionApi {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyAuthority('w_all','w_permission')")
     public ResponseEntity<PermissionDto> createPermission(@RequestHeader(AUTHORIZATION) String token,
                                                           @RequestBody @Valid CreatePermissionDto dto)
             throws AlreadyExistException {

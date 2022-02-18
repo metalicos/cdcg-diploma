@@ -1,8 +1,8 @@
 package ua.com.cyberdone.cloudgateway.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
+import ua.com.cyberdone.cloudgateway.configuration.FeignConfiguration;
 import ua.com.cyberdone.cloudgateway.exception.AccessDeniedException;
 import ua.com.cyberdone.cloudgateway.exception.AlreadyExistException;
 import ua.com.cyberdone.cloudgateway.exception.AuthenticationException;
@@ -32,12 +34,11 @@ import ua.com.cyberdone.cloudgateway.model.accountmicroservice.role.RoleDto;
 import ua.com.cyberdone.cloudgateway.model.accountmicroservice.role.RolesDto;
 import ua.com.cyberdone.cloudgateway.model.accountmicroservice.token.TokenDto;
 
-import javax.validation.Valid;
 import java.io.IOException;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
-@FeignClient(value = "cyber-done-account-microservice")
+@FeignClient(value = "cyber-done-account-microservice", configuration = FeignConfiguration.class)
 public interface AccountMicroserviceFeignClient {
 
     /*
@@ -47,7 +48,6 @@ public interface AccountMicroserviceFeignClient {
      */
 
     @GetMapping("/accounts")
-    @PreAuthorize("hasAnyAuthority('r_all','r_accounts')")
     ResponseEntity<AccountsDto> readAccounts(@RequestHeader(AUTHORIZATION) String token,
                                              @RequestParam(defaultValue = "0") int page,
                                              @RequestParam(defaultValue = "20") int size,
@@ -56,27 +56,36 @@ public interface AccountMicroserviceFeignClient {
             throws NotFoundException;
 
     @GetMapping("/accounts/{username}")
-    @PreAuthorize("hasAnyAuthority('r_all','r_account','r_self')")
     ResponseEntity<AccountDto> readAccount(@RequestHeader(AUTHORIZATION) String token,
                                            @PathVariable(value = "username") String username)
             throws NotFoundException;
 
     @DeleteMapping("/accounts")
-    @PreAuthorize("hasAnyAuthority('d_all','d_accounts')")
     ResponseEntity<String> deleteAccounts(@RequestHeader(AUTHORIZATION) String token);
 
     @DeleteMapping("/accounts/{username}/permanent")
-    @PreAuthorize("hasAnyAuthority('d_all','d_account','d_self')")
     ResponseEntity<String> permanentDeleteAccount(@RequestHeader(AUTHORIZATION) String token,
                                                   @PathVariable String username);
 
     @DeleteMapping("/accounts/{username}")
-    @PreAuthorize("hasAnyAuthority('d_all','d_account','d_self')")
     ResponseEntity<String> deleteAccount(@RequestHeader(AUTHORIZATION) String token,
                                          @PathVariable String username) throws NotFoundException;
 
+
+    @GetMapping("/accounts/{username}/profileImage")
+    ResponseEntity<String> readAccountProfileImage(@RequestHeader(AUTHORIZATION) String token,
+                                                   @PathVariable(value = "username") String username)
+            throws IOException;
+
+    @GetMapping("/accounts/self/profileImage")
+    ResponseEntity<String> readSelfAccountProfileImage(@RequestHeader(AUTHORIZATION) String token)
+            throws IOException;
+
+    @GetMapping("/accounts/self")
+    ResponseEntity<AccountDto> readSelfAccount(@RequestHeader(AUTHORIZATION) String token)
+            throws NotFoundException;
+
     @DeleteMapping("/accounts/self")
-    @PreAuthorize("hasAnyAuthority('d_self')")
     ResponseEntity<String> deleteSelf(@RequestHeader(AUTHORIZATION) String token) throws NotFoundException;
 
     @PostMapping("/accounts/registration")
@@ -93,21 +102,20 @@ public interface AccountMicroserviceFeignClient {
             throws NotFoundException;
 
     @PutMapping("/accounts/change/fullname")
-    @PreAuthorize("hasAnyAuthority('u_all','u_accounts','u_self')")
     ResponseEntity<String> changeFullName(@RequestHeader(AUTHORIZATION) String token,
                                           @RequestBody ChangeFullNameDto changeFullNameDto)
             throws NotFoundException;
 
     @PutMapping("/accounts/change/username")
-    @PreAuthorize("hasAnyAuthority('u_all','u_accounts','u_self')")
     ResponseEntity<String> changeUsername(@RequestHeader(AUTHORIZATION) String token,
                                           @RequestBody ChangeEmailDto changeEmailDto)
             throws NotFoundException, AlreadyExistException;
 
-    @PutMapping("/accounts/{username}/change/image")
-    @PreAuthorize("hasAnyAuthority('u_all','u_images','u_self')")
+    @PutMapping(value = "/accounts/{username}/change/image",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<String> changeImage(@RequestHeader(AUTHORIZATION) String token,
-                                       @PathVariable String username, @RequestParam MultipartFile file)
+                                       @PathVariable String username, @RequestPart("file") MultipartFile file)
             throws NotFoundException, IOException, AlreadyExistException;
 
     @PostMapping("/accounts/authentication/login")

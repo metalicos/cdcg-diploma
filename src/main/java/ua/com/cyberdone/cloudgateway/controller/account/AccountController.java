@@ -1,8 +1,8 @@
 package ua.com.cyberdone.cloudgateway.controller.account;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import ua.com.cyberdone.cloudgateway.constant.Regex;
@@ -31,7 +32,6 @@ import ua.com.cyberdone.cloudgateway.model.accountmicroservice.account.LogoutDto
 import ua.com.cyberdone.cloudgateway.model.accountmicroservice.account.RegistrationDto;
 import ua.com.cyberdone.cloudgateway.model.accountmicroservice.token.TokenDto;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import java.io.IOException;
 
@@ -44,7 +44,6 @@ public class AccountController implements AccountApi {
     private final AccountMicroserviceFeignClient accountFeignClient;
 
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('r_all','r_accounts')")
     public ResponseEntity<AccountsDto> readAccounts(@RequestHeader(AUTHORIZATION) String token,
                                                     @RequestParam(defaultValue = "0") int page,
                                                     @RequestParam(defaultValue = "20") int size,
@@ -55,35 +54,50 @@ public class AccountController implements AccountApi {
     }
 
     @GetMapping("/{username}")
-    @PreAuthorize("hasAnyAuthority('r_all','r_account','r_self')")
     public ResponseEntity<AccountDto> readAccount(@RequestHeader(AUTHORIZATION) String token,
                                                   @PathVariable(value = "username") String username)
             throws NotFoundException {
         return accountFeignClient.readAccount(token, username);
     }
 
+
+    @GetMapping("/{username}/profileImage")
+    public ResponseEntity<String> readAccountProfileImage(@RequestHeader(AUTHORIZATION) String token,
+                                                          @PathVariable(value = "username") String username)
+            throws IOException {
+        return accountFeignClient.readAccountProfileImage(token, username);
+    }
+
+    @GetMapping("/self/profileImage")
+    public ResponseEntity<String> readSelfAccountProfileImage(@RequestHeader(AUTHORIZATION) String token)
+            throws IOException {
+        return accountFeignClient.readSelfAccountProfileImage(token);
+    }
+
+    @GetMapping("/self")
+    public ResponseEntity<AccountDto> readSelfAccount(@RequestHeader(AUTHORIZATION) String token)
+            throws NotFoundException {
+        return accountFeignClient.readSelfAccount(token);
+    }
+
     @DeleteMapping
-    @PreAuthorize("hasAnyAuthority('d_all','d_accounts')")
     public ResponseEntity<String> deleteAccounts(@RequestHeader(AUTHORIZATION) String token) {
         return accountFeignClient.deleteAccounts(token);
     }
 
     @DeleteMapping("/{username}/permanent")
-    @PreAuthorize("hasAnyAuthority('d_all','d_account','d_self')")
     public ResponseEntity<String> permanentDeleteAccount(@RequestHeader(AUTHORIZATION) String token,
                                                          @PathVariable String username) {
         return accountFeignClient.permanentDeleteAccount(token, username);
     }
 
     @DeleteMapping("/{username}")
-    @PreAuthorize("hasAnyAuthority('d_all','d_account','d_self')")
     public ResponseEntity<String> deleteAccount(@RequestHeader(AUTHORIZATION) String token,
                                                 @PathVariable String username) throws NotFoundException {
         return accountFeignClient.deleteAccount(token, username);
     }
 
     @DeleteMapping("/self")
-    @PreAuthorize("hasAnyAuthority('d_self')")
     public ResponseEntity<String> deleteSelf(@RequestHeader(AUTHORIZATION) String token) throws NotFoundException {
         return accountFeignClient.deleteSelf(token);
     }
@@ -108,7 +122,6 @@ public class AccountController implements AccountApi {
     }
 
     @PutMapping("/change/fullname")
-    @PreAuthorize("hasAnyAuthority('u_all','u_accounts','u_self')")
     public ResponseEntity<String> changeFullName(@RequestHeader(AUTHORIZATION) String token,
                                                  @RequestBody ChangeFullNameDto changeFullNameDto)
             throws NotFoundException {
@@ -116,7 +129,6 @@ public class AccountController implements AccountApi {
     }
 
     @PutMapping("/change/username")
-    @PreAuthorize("hasAnyAuthority('u_all','u_accounts','u_self')")
     public ResponseEntity<String> changeUsername(@RequestHeader(AUTHORIZATION) String token,
                                                  @RequestBody ChangeEmailDto changeEmailDto)
             throws NotFoundException, AlreadyExistException {
@@ -124,11 +136,13 @@ public class AccountController implements AccountApi {
     }
 
     @PutMapping("/{username}/change/image")
-    @PreAuthorize("hasAnyAuthority('u_all','u_images','u_self')")
     public ResponseEntity<String> changeImage(@RequestHeader(AUTHORIZATION) String token,
                                               @Pattern(regexp = Regex.EMAIL_RGX, message = Regex.EMAIL_FAIL_MESSAGE)
-                                              @PathVariable String username, @RequestParam MultipartFile file)
+                                              @PathVariable String username, @RequestPart("file") MultipartFile file)
             throws NotFoundException, IOException, AlreadyExistException {
+        System.out.println(file.getBytes());
+        System.out.println(file.getBytes().length);
+
         return accountFeignClient.changeImage(token, username, file);
     }
 

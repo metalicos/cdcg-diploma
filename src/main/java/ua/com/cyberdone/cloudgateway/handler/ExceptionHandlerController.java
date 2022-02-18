@@ -56,6 +56,7 @@ public class ExceptionHandlerController {
     @ExceptionHandler(FeignException.class)
     public ResponseEntity<RestError> handleFeignStatusException(FeignException e, HttpServletResponse response)
             throws JsonProcessingException {
+        System.out.println(e.contentUTF8());
         var error = switch (e.status()) {
             case 401 -> RestError.builder().error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
                     .title(UNAUTHORIZED_MSG)

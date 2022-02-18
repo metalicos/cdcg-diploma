@@ -2,7 +2,6 @@ package ua.com.cyberdone.cloudgateway.controller.account;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +28,6 @@ public class RoleController implements RoleApi {
     private final AccountMicroserviceFeignClient accountFeignClient;
 
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('r_all','r_accounts')")
     public ResponseEntity<RolesDto> readRoles(@RequestHeader(AUTHORIZATION) String token,
                                               @RequestParam(defaultValue = "0") int page,
                                               @RequestParam(defaultValue = "20") int size,
@@ -39,7 +37,6 @@ public class RoleController implements RoleApi {
     }
 
     @GetMapping("/{role-name}")
-    @PreAuthorize("hasAnyAuthority('r_all','r_account','r_self')")
     public ResponseEntity<RoleDto> readRole(@RequestHeader(AUTHORIZATION) String token,
                                             @PathVariable(value = "role-name") String roleName)
             throws NotFoundException {
@@ -47,13 +44,11 @@ public class RoleController implements RoleApi {
     }
 
     @DeleteMapping
-    @PreAuthorize("hasAnyAuthority('d_all','d_accounts')")
     public ResponseEntity<String> deleteRoles(@RequestHeader(AUTHORIZATION) String token) {
         return accountFeignClient.deleteRoles(token);
     }
 
     @DeleteMapping("/{role-name}")
-    @PreAuthorize("hasAnyAuthority('d_all','d_account','d_self')")
     public ResponseEntity<String> deleteRole(@RequestHeader(AUTHORIZATION) String token,
                                              @PathVariable(value = "role-name") String roleName) {
         return accountFeignClient.deleteRole(token, roleName);

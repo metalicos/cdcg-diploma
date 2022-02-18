@@ -19,7 +19,6 @@ import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CyberdoneUserDetailsService cyberdoneUserDetailsService;
     private final AuthenticationFilter authFilter;
@@ -56,6 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(corsFilter(), CorsFilter.class);
+                .addFilterAfter(corsFilter(), CorsFilter.class)
+                .authorizeHttpRequests().anyRequest().permitAll();
     }
 }
