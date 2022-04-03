@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DeviceMetadataDto {
     private Long id;
+    private String deviceImage;
     private String uuid;
     private String name;
     private String description;
