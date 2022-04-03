@@ -29,6 +29,7 @@ import ua.com.cyberdone.cloudgateway.model.accountmicroservice.account.ChangeFul
 import ua.com.cyberdone.cloudgateway.model.accountmicroservice.account.ChangePasswordDto;
 import ua.com.cyberdone.cloudgateway.model.accountmicroservice.account.LoginDto;
 import ua.com.cyberdone.cloudgateway.model.accountmicroservice.account.LogoutDto;
+import ua.com.cyberdone.cloudgateway.model.accountmicroservice.account.OauthLoginDto;
 import ua.com.cyberdone.cloudgateway.model.accountmicroservice.account.RegistrationDto;
 import ua.com.cyberdone.cloudgateway.model.accountmicroservice.token.TokenDto;
 
@@ -140,15 +141,17 @@ public class AccountController implements AccountApi {
                                               @Pattern(regexp = Regex.EMAIL_RGX, message = Regex.EMAIL_FAIL_MESSAGE)
                                               @PathVariable String username, @RequestPart("file") MultipartFile file)
             throws NotFoundException, IOException, AlreadyExistException {
-        System.out.println(file.getBytes());
-        System.out.println(file.getBytes().length);
-
         return accountFeignClient.changeImage(token, username, file);
     }
 
     @PostMapping("/authentication/login")
     public ResponseEntity<TokenDto> login(@RequestBody LoginDto loginDto) throws AuthenticationException {
         return accountFeignClient.login(loginDto);
+    }
+
+    @PostMapping("/authentication/oauth")
+    public ResponseEntity<TokenDto> loginOauth(@RequestBody OauthLoginDto oauthLoginDto) throws AuthenticationException {
+        return accountFeignClient.loginOauth(oauthLoginDto);
     }
 
     @PostMapping("/authentication/logout")

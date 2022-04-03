@@ -25,6 +25,7 @@ import ua.com.cyberdone.cloudgateway.model.accountmicroservice.account.ChangeFul
 import ua.com.cyberdone.cloudgateway.model.accountmicroservice.account.ChangePasswordDto;
 import ua.com.cyberdone.cloudgateway.model.accountmicroservice.account.LoginDto;
 import ua.com.cyberdone.cloudgateway.model.accountmicroservice.account.LogoutDto;
+import ua.com.cyberdone.cloudgateway.model.accountmicroservice.account.OauthLoginDto;
 import ua.com.cyberdone.cloudgateway.model.accountmicroservice.account.RegistrationDto;
 import ua.com.cyberdone.cloudgateway.model.accountmicroservice.permission.CreatePermissionDto;
 import ua.com.cyberdone.cloudgateway.model.accountmicroservice.permission.PermissionDto;
@@ -120,6 +121,9 @@ public interface AccountMicroserviceFeignClient {
 
     @PostMapping("/accounts/authentication/login")
     ResponseEntity<TokenDto> login(@RequestBody LoginDto loginDto) throws AuthenticationException;
+
+    @PostMapping("/accounts/authentication/oauth")
+    ResponseEntity<TokenDto> loginOauth(@RequestBody OauthLoginDto oauthLoginDto) throws AuthenticationException;
 
     @PostMapping("/accounts/authentication/logout")
     ResponseEntity<TokenDto> logout(@RequestHeader(AUTHORIZATION) String token,
