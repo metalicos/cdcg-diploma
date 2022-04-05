@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import ua.com.cyberdone.cloudgateway.constant.ControllerConstantUtils;
+import ua.com.cyberdone.cloudgateway.model.devicemicroservice.hydroponic.DatabasePhCalibrationDto;
+import ua.com.cyberdone.cloudgateway.model.devicemicroservice.hydroponic.DatabaseTdsCalibrationDto;
 import ua.com.cyberdone.cloudgateway.model.devicemicroservice.hydroponic.HydroponicTimeDto;
 
 @Tag(name = "Hydroponic Control", description = "Endpoints for control hydroponic microcontrollers")
@@ -54,6 +56,12 @@ public interface HydroponicControlApi {
             content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE,
                     schema = @Schema(implementation = String.class, example = ControllerConstantUtils.OK)))
     ResponseEntity<String> restart(String token, String uuid);
+
+    @Operation(summary = "Update restart counter value", description = "Update restart counter")
+    @ApiResponse(responseCode = "200", description = "Update restart counter",
+            content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE,
+                    schema = @Schema(implementation = String.class, example = ControllerConstantUtils.OK)))
+    ResponseEntity<String> restartCounter(String token, String uuid, String value);
 
     @Operation(summary = "Save all settings in hydroponic microcontroller memory", description = "Save all settings in hydroponic microcontroller EEPROM memory")
     @ApiResponse(responseCode = "200", description = "Save settings in hydroponic microcontroller EEPROM memory",
@@ -174,4 +182,16 @@ public interface HydroponicControlApi {
             content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE,
                     schema = @Schema(implementation = String.class, example = ControllerConstantUtils.OK)))
     ResponseEntity<String> updateDispensersEnable(String token, String uuid, String value);
+
+    @Operation(summary = "Update PH calibration using data earlier saved in the DB", description = "Update PH calibration using data earlier saved in the DB")
+    @ApiResponse(responseCode = "200", description = "Update PH calibration using data earlier saved in the DB",
+            content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE,
+                    schema = @Schema(implementation = String.class, example = ControllerConstantUtils.OK)))
+    ResponseEntity<String> updatePhFromDatabaseData(String token, DatabasePhCalibrationDto dto);
+
+    @Operation(summary = "Update TDS calibration using data earlier saved in the DB", description = "Update TDS calibration using data earlier saved in the DB")
+    @ApiResponse(responseCode = "200", description = "Update TDS calibration using data earlier saved in the DB",
+            content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE,
+                    schema = @Schema(implementation = String.class, example = ControllerConstantUtils.OK)))
+    ResponseEntity<String> updateTdsFromDatabaseData(String token, DatabaseTdsCalibrationDto dto);
 }

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ua.com.cyberdone.cloudgateway.documentation.device.HydroponicControlApi;
 import ua.com.cyberdone.cloudgateway.feign.DeviceMicroserviceFeignClient;
+import ua.com.cyberdone.cloudgateway.model.devicemicroservice.hydroponic.DatabasePhCalibrationDto;
+import ua.com.cyberdone.cloudgateway.model.devicemicroservice.hydroponic.DatabaseTdsCalibrationDto;
 import ua.com.cyberdone.cloudgateway.model.devicemicroservice.hydroponic.HydroponicTimeDto;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -60,6 +62,13 @@ public class HydroponicControlController implements HydroponicControlApi {
     public ResponseEntity<String> restart(@RequestHeader(AUTHORIZATION) String token,
                                           @RequestParam String uuid) {
         return deviceFeignClient.restart(token, uuid);
+    }
+
+    @PutMapping("/update/restart-counter")
+    public ResponseEntity<String> restartCounter(@RequestHeader(AUTHORIZATION) String token,
+                                                 @RequestParam String uuid,
+                                                 @RequestParam String value) {
+        return deviceFeignClient.updateRestartCounter(token, uuid, value);
     }
 
     @PutMapping("/save/settings")
@@ -179,5 +188,17 @@ public class HydroponicControlController implements HydroponicControlApi {
     public ResponseEntity<String> updateDispensersEnable(@RequestHeader(AUTHORIZATION) String token,
                                                          @RequestParam String uuid, @RequestParam String value) {
         return deviceFeignClient.updateDispensersEnable(token, uuid, value);
+    }
+
+    @PutMapping("/calibrate/ph/database")
+    public ResponseEntity<String> updatePhFromDatabaseData(@RequestHeader(AUTHORIZATION) String token,
+                                                           @RequestBody DatabasePhCalibrationDto dto) {
+        return deviceFeignClient.updatePhFromDatabaseData(token, dto);
+    }
+
+    @PutMapping("/calibrate/tds/database")
+    public ResponseEntity<String> updateTdsFromDatabaseData(@RequestHeader(AUTHORIZATION) String token,
+                                                            @RequestBody DatabaseTdsCalibrationDto dto) {
+        return deviceFeignClient.updateTdsFromDatabaseData(token, dto);
     }
 }

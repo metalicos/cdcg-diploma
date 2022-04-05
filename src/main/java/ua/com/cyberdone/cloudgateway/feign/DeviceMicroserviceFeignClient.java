@@ -14,6 +14,8 @@ import ua.com.cyberdone.cloudgateway.model.devicemicroservice.DeviceMetadataDto;
 import ua.com.cyberdone.cloudgateway.model.devicemicroservice.DeviceType;
 import ua.com.cyberdone.cloudgateway.model.devicemicroservice.RegularScheduleDto;
 import ua.com.cyberdone.cloudgateway.model.devicemicroservice.RegularScheduleUpdateDto;
+import ua.com.cyberdone.cloudgateway.model.devicemicroservice.hydroponic.DatabasePhCalibrationDto;
+import ua.com.cyberdone.cloudgateway.model.devicemicroservice.hydroponic.DatabaseTdsCalibrationDto;
 import ua.com.cyberdone.cloudgateway.model.devicemicroservice.hydroponic.HydroponicCalibrationDataDto;
 import ua.com.cyberdone.cloudgateway.model.devicemicroservice.hydroponic.HydroponicDataDto;
 import ua.com.cyberdone.cloudgateway.model.devicemicroservice.hydroponic.HydroponicSettingTemplateDto;
@@ -163,10 +165,14 @@ public interface DeviceMicroserviceFeignClient {
     @PutMapping("/hydroponic/control/update/restart")
     ResponseEntity<String> restart(@RequestHeader(AUTHORIZATION) String token, @RequestParam String uuid);
 
-    @PostMapping("/hydroponic/control/save/settings")
+    @PutMapping("/hydroponic/control/update/restart-counter")
+    ResponseEntity<String> updateRestartCounter(@RequestHeader(AUTHORIZATION) String token,
+                                                @RequestParam String uuid, @RequestParam String value);
+
+    @PutMapping("/hydroponic/control/save/settings")
     ResponseEntity<String> saveAllSettings(@RequestHeader(AUTHORIZATION) String token, @RequestParam String uuid);
 
-    @GetMapping("/hydroponic/control/read/settings")
+    @PutMapping("/hydroponic/control/read/settings")
     ResponseEntity<String> readAllSettings(@RequestHeader(AUTHORIZATION) String token, @RequestParam String uuid);
 
     @PutMapping("/hydroponic/control/calibrate/tds")
@@ -238,4 +244,12 @@ public interface DeviceMicroserviceFeignClient {
     @PutMapping("/hydroponic/control/update/enable/dispensers")
     ResponseEntity<String> updateDispensersEnable(@RequestHeader(AUTHORIZATION) String token,
                                                   @RequestParam String uuid, @RequestParam String value);
+
+    @PutMapping("/hydroponic/control/calibrate/ph/database")
+    ResponseEntity<String> updatePhFromDatabaseData(@RequestHeader(AUTHORIZATION) String token,
+                                                    @RequestBody DatabasePhCalibrationDto dto);
+
+    @PutMapping("/hydroponic/control/calibrate/tds/database")
+    ResponseEntity<String> updateTdsFromDatabaseData(@RequestHeader(AUTHORIZATION) String token,
+                                                     @RequestBody DatabaseTdsCalibrationDto dto);
 }
