@@ -1,4 +1,4 @@
-package ua.com.cyberdone.cloudgateway.controller.device;
+package ua.com.cyberdone.cloudgateway.controller.device.hydroponic;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
