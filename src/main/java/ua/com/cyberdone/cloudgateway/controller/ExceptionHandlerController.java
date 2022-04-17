@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
-import ua.com.cyberdone.cloudgateway.documentation.ExceptionHandlerApi;
+import ua.com.cyberdone.cloudgateway.controller.docs.ExceptionHandlerApi;
 import ua.com.cyberdone.cloudgateway.exception.AccessDeniedException;
 import ua.com.cyberdone.cloudgateway.exception.AlreadyExistException;
 import ua.com.cyberdone.cloudgateway.exception.AuthenticationException;

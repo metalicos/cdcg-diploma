@@ -1,4 +1,4 @@
-package ua.com.cyberdone.cloudgateway.documentation;
+package ua.com.cyberdone.cloudgateway.controller.docs;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;

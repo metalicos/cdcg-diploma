@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ua.com.cyberdone.cloudgateway.documentation.device.HydroponicSettingTemplateApi;
+import ua.com.cyberdone.cloudgateway.controller.docs.device.HydroponicSettingTemplateApi;
 import ua.com.cyberdone.cloudgateway.feign.DeviceMicroserviceFeignClient;
 import ua.com.cyberdone.cloudgateway.model.devicemicroservice.hydroponic.HydroponicSettingTemplateDto;
 import ua.com.cyberdone.cloudgateway.model.devicemicroservice.hydroponic.HydroponicSettingsDto;

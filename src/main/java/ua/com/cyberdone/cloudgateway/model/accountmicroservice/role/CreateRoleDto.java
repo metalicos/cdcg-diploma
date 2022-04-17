@@ -8,9 +8,9 @@ import javax.validation.constraints.Pattern;
 import java.util.Set;
 
 import static ua.com.cyberdone.cloudgateway.constant.Regex.PERMISSION_NAME_FAIL_MESSAGE;
-import static ua.com.cyberdone.cloudgateway.constant.Regex.PERMISSION_NAME_RGX;
+import static ua.com.cyberdone.cloudgateway.constant.Regex.PERMISSION_NAME_PATTERN;
 import static ua.com.cyberdone.cloudgateway.constant.Regex.ROLE_NAME_FAIL_MESSAGE;
-import static ua.com.cyberdone.cloudgateway.constant.Regex.ROLE_NAME_RGX;
+import static ua.com.cyberdone.cloudgateway.constant.Regex.ROLE_NAME_PATTERN;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -21,7 +21,7 @@ import static ua.com.cyberdone.cloudgateway.constant.Regex.ROLE_NAME_RGX;
         "    ]\n" +
         "}")
 public class CreateRoleDto {
-    @Pattern(regexp = ROLE_NAME_RGX, message = ROLE_NAME_FAIL_MESSAGE)
+    @Pattern(regexp = ROLE_NAME_PATTERN, message = ROLE_NAME_FAIL_MESSAGE)
     private String role;
-    private Set<@Pattern(regexp = PERMISSION_NAME_RGX, message = PERMISSION_NAME_FAIL_MESSAGE) String> permissionNames;
+    private Set<@Pattern(regexp = PERMISSION_NAME_PATTERN, message = PERMISSION_NAME_FAIL_MESSAGE) String> permissionNames;
 }

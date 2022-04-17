@@ -7,7 +7,7 @@ import lombok.Data;
 import javax.validation.constraints.Pattern;
 
 import static ua.com.cyberdone.cloudgateway.constant.Regex.EMAIL_FAIL_MESSAGE;
-import static ua.com.cyberdone.cloudgateway.constant.Regex.EMAIL_RGX;
+import static ua.com.cyberdone.cloudgateway.constant.Regex.EMAIL_PATTERN;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -16,11 +16,11 @@ import static ua.com.cyberdone.cloudgateway.constant.Regex.EMAIL_RGX;
         "    \"newEmail\": \"newone2022@gmail.com\"\n" +
         "}")
 public class ChangeEmailDto {
-    @Pattern(regexp = EMAIL_RGX,
+    @Pattern(regexp = EMAIL_PATTERN,
             message = EMAIL_FAIL_MESSAGE)
     private String oldEmail;
 
-    @Pattern(regexp = EMAIL_RGX,
+    @Pattern(regexp = EMAIL_PATTERN,
             message = EMAIL_FAIL_MESSAGE)
     private String newEmail;
 }

@@ -1,7 +1,6 @@
 package ua.com.cyberdone.cloudgateway.controller.account;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import ua.com.cyberdone.cloudgateway.constant.Regex;
-import ua.com.cyberdone.cloudgateway.documentation.account.AccountApi;
+import ua.com.cyberdone.cloudgateway.controller.docs.account.AccountApi;
 import ua.com.cyberdone.cloudgateway.exception.AccessDeniedException;
 import ua.com.cyberdone.cloudgateway.exception.AlreadyExistException;
 import ua.com.cyberdone.cloudgateway.exception.AuthenticationException;
@@ -138,7 +137,7 @@ public class AccountController implements AccountApi {
 
     @PutMapping("/{username}/change/image")
     public ResponseEntity<String> changeImage(@RequestHeader(AUTHORIZATION) String token,
-                                              @Pattern(regexp = Regex.EMAIL_RGX, message = Regex.EMAIL_FAIL_MESSAGE)
+                                              @Pattern(regexp = Regex.EMAIL_PATTERN, message = Regex.EMAIL_FAIL_MESSAGE)
                                               @PathVariable String username, @RequestPart("file") MultipartFile file)
             throws NotFoundException, IOException, AlreadyExistException {
         return accountFeignClient.changeImage(token, username, file);

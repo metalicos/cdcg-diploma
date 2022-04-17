@@ -16,10 +16,10 @@ import javax.validation.constraints.Pattern;
         "}")
 public class PermissionDto {
     private Long id;
-    @Pattern(regexp = Regex.PERMISSION_NAME_RGX,
+    @Pattern(regexp = Regex.PERMISSION_NAME_PATTERN,
             message = Regex.PERMISSION_NAME_FAIL_MESSAGE)
     private String name;
-    @Pattern(regexp = Regex.PERMISSION_VALUE_RGX,
+    @Pattern(regexp = Regex.PERMISSION_VALUE_PATTERN,
             message = Regex.PERMISSION_VALUE_FAIL_MESSAGE)
     private String value;
 }

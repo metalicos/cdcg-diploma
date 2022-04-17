@@ -7,10 +7,10 @@ import lombok.Data;
 import javax.validation.constraints.Pattern;
 
 import static ua.com.cyberdone.cloudgateway.constant.Regex.EMAIL_FAIL_MESSAGE;
-import static ua.com.cyberdone.cloudgateway.constant.Regex.EMAIL_RGX;
+import static ua.com.cyberdone.cloudgateway.constant.Regex.EMAIL_PATTERN;
 import static ua.com.cyberdone.cloudgateway.constant.Regex.FIRST_NAME_FAIL_MESSAGE;
 import static ua.com.cyberdone.cloudgateway.constant.Regex.LAST_NAME_FAIL_MESSAGE;
-import static ua.com.cyberdone.cloudgateway.constant.Regex.NAME_RGX;
+import static ua.com.cyberdone.cloudgateway.constant.Regex.NAME_PATTERN;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -22,14 +22,14 @@ public class OauthLoginDto {
     private String id;
     private String idToken;
     private String authToken;
-    @Pattern(regexp = EMAIL_RGX,
+    @Pattern(regexp = EMAIL_PATTERN,
             message = EMAIL_FAIL_MESSAGE)
     private String email;
     private String photoUrl;
-    @Pattern(regexp = NAME_RGX,
+    @Pattern(regexp = NAME_PATTERN,
             message = FIRST_NAME_FAIL_MESSAGE)
     private String firstName;
-    @Pattern(regexp = NAME_RGX,
+    @Pattern(regexp = NAME_PATTERN,
             message = LAST_NAME_FAIL_MESSAGE)
     private String lastName;
     private String provider;

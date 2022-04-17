@@ -15,12 +15,12 @@ import java.io.Serializable;
 import java.util.Set;
 
 import static ua.com.cyberdone.cloudgateway.constant.Regex.EMAIL_FAIL_MESSAGE;
-import static ua.com.cyberdone.cloudgateway.constant.Regex.EMAIL_RGX;
+import static ua.com.cyberdone.cloudgateway.constant.Regex.EMAIL_PATTERN;
 import static ua.com.cyberdone.cloudgateway.constant.Regex.FIRST_NAME_FAIL_MESSAGE;
 import static ua.com.cyberdone.cloudgateway.constant.Regex.LAST_NAME_FAIL_MESSAGE;
-import static ua.com.cyberdone.cloudgateway.constant.Regex.NAME_RGX;
+import static ua.com.cyberdone.cloudgateway.constant.Regex.NAME_PATTERN;
 import static ua.com.cyberdone.cloudgateway.constant.Regex.PASSWORD_FAIL_MESSAGE;
-import static ua.com.cyberdone.cloudgateway.constant.Regex.PASSWORD_RGX;
+import static ua.com.cyberdone.cloudgateway.constant.Regex.PASSWORD_PATTERN;
 import static ua.com.cyberdone.cloudgateway.constant.Regex.PATRONYMIC_FAIL_MESSAGE;
 
 @Data
@@ -66,20 +66,20 @@ import static ua.com.cyberdone.cloudgateway.constant.Regex.PATRONYMIC_FAIL_MESSA
         "}")
 public class AccountDto implements Serializable {
     private Long id;
-    @Pattern(regexp = EMAIL_RGX,
+    @Pattern(regexp = EMAIL_PATTERN,
             message = EMAIL_FAIL_MESSAGE)
     private String username;
-    @Pattern(regexp = PASSWORD_RGX,
+    @Pattern(regexp = PASSWORD_PATTERN,
             message = PASSWORD_FAIL_MESSAGE)
     @JsonIgnore
     private String password;
-    @Pattern(regexp = NAME_RGX,
+    @Pattern(regexp = NAME_PATTERN,
             message = FIRST_NAME_FAIL_MESSAGE)
     private String firstName;
-    @Pattern(regexp = NAME_RGX,
+    @Pattern(regexp = NAME_PATTERN,
             message = LAST_NAME_FAIL_MESSAGE)
     private String lastName;
-    @Pattern(regexp = NAME_RGX,
+    @Pattern(regexp = NAME_PATTERN,
             message = PATRONYMIC_FAIL_MESSAGE)
     private String patronymic;
     private Boolean isEnabled;

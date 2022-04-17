@@ -1,4 +1,4 @@
-package ua.com.cyberdone.cloudgateway.documentation.device;
+package ua.com.cyberdone.cloudgateway.controller.docs.device;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

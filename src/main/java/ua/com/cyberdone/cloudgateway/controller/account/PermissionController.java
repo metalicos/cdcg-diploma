@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ua.com.cyberdone.cloudgateway.documentation.account.PermissionApi;
+import ua.com.cyberdone.cloudgateway.controller.docs.account.PermissionApi;
 import ua.com.cyberdone.cloudgateway.exception.AlreadyExistException;
 import ua.com.cyberdone.cloudgateway.exception.NotFoundException;
 import ua.com.cyberdone.cloudgateway.feign.AccountMicroserviceFeignClient;
@@ -24,7 +24,7 @@ import javax.validation.constraints.Pattern;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static ua.com.cyberdone.cloudgateway.constant.Regex.PERMISSION_NAME_FAIL_MESSAGE;
-import static ua.com.cyberdone.cloudgateway.constant.Regex.PERMISSION_NAME_RGX;
+import static ua.com.cyberdone.cloudgateway.constant.Regex.PERMISSION_NAME_PATTERN;
 
 @RestController
 @RequiredArgsConstructor
@@ -55,7 +55,7 @@ public class PermissionController implements PermissionApi {
     @DeleteMapping("/{name}")
     public ResponseEntity<String> deletePermission(
             @RequestHeader(AUTHORIZATION) String token,
-            @Pattern(regexp = PERMISSION_NAME_RGX, message = PERMISSION_NAME_FAIL_MESSAGE)
+            @Pattern(regexp = PERMISSION_NAME_PATTERN, message = PERMISSION_NAME_FAIL_MESSAGE)
             @PathVariable String name) {
         return accountFeignClient.deletePermission(token, name);
     }

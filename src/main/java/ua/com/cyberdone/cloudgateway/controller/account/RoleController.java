@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ua.com.cyberdone.cloudgateway.documentation.account.RoleApi;
+import ua.com.cyberdone.cloudgateway.controller.docs.account.RoleApi;
 import ua.com.cyberdone.cloudgateway.exception.AlreadyExistException;
 import ua.com.cyberdone.cloudgateway.exception.NotFoundException;
 import ua.com.cyberdone.cloudgateway.feign.AccountMicroserviceFeignClient;

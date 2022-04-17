@@ -7,7 +7,7 @@ import lombok.Data;
 import javax.validation.constraints.Pattern;
 
 import static ua.com.cyberdone.cloudgateway.constant.Regex.TOKEN_FAIL_MESSAGE;
-import static ua.com.cyberdone.cloudgateway.constant.Regex.TOKEN_WITH_TYPE_RGX;
+import static ua.com.cyberdone.cloudgateway.constant.Regex.TOKEN_WITH_TYPE_PATTERN;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -15,7 +15,7 @@ import static ua.com.cyberdone.cloudgateway.constant.Regex.TOKEN_WITH_TYPE_RGX;
         "    \"token\":\"Bearer eyJhbGciOiJIUzUxMiJ9.eyJzd.WIiOiJvc3RhcC5qYUBnbWFpbC5jb20\"\n" +
         "}")
 public class LogoutDto {
-    @Pattern(regexp = TOKEN_WITH_TYPE_RGX,
+    @Pattern(regexp = TOKEN_WITH_TYPE_PATTERN,
             message = TOKEN_FAIL_MESSAGE)
     private String token;
 }
