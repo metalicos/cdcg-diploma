@@ -8,10 +8,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 import ua.com.cyberdone.cloudgateway.constant.ControllerConstantUtils;
+import ua.com.cyberdone.cloudgateway.exception.NotFoundException;
 import ua.com.cyberdone.cloudgateway.model.devicemicroservice.DeviceMetadataDto;
 import ua.com.cyberdone.cloudgateway.model.devicemicroservice.DeviceType;
 
+import java.io.IOException;
 import java.util.List;
 
 @Tag(name = "Device Metadata", description = "Endpoints for managing device metadata")
@@ -33,11 +36,18 @@ public interface DeviceMetadataApi {
     @Operation(summary = "Update device metadata (name && description)", description = "Update description and name of the device. User customization purpose.")
     @ApiResponse(responseCode = "200", description = "Update description and name of the device. User customization purpose.",
             content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE,
-                    schema = @Schema(implementation = String.class, example = ControllerConstantUtils.OK)))
-    ResponseEntity<String> updateMetadata(String token,
-                                          String uuid,
-                                          String name,
-                                          String description);
+                    schema = @Schema(implementation = DeviceMetadataDto.class)))
+    ResponseEntity<DeviceMetadataDto> updateMetadata(
+            String token, String uuid, String name, String description)
+            throws IOException, NotFoundException;
+
+    @Operation(summary = "Update device image", description = "Update device image. User customization purpose.")
+    @ApiResponse(responseCode = "200", description = "Update device image. User customization purpose.",
+            content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
+                    schema = @Schema(implementation = DeviceMetadataDto.class)))
+    ResponseEntity<DeviceMetadataDto> updateDeviceImage(
+            String token, String uuid, MultipartFile deviceImage)
+            throws IOException, NotFoundException;
 
     @Operation(summary = "Create device metadata", description = "Creates metadata for device.")
     @ApiResponse(responseCode = "200", description = "Create device metadata, also creates a device, because metadata is the main concept.",

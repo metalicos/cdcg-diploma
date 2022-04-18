@@ -50,15 +50,15 @@ public interface AccountMicroserviceFeignClient {
 
     @GetMapping("/accounts")
     ResponseEntity<AccountsDto> readAccounts(@RequestHeader(AUTHORIZATION) String token,
-                                             @RequestParam(defaultValue = "0") int page,
-                                             @RequestParam(defaultValue = "20") int size,
-                                             @RequestParam(defaultValue = "NONE") String direction,
-                                             @RequestParam(defaultValue = "NONE") String sortBy)
+                                             @RequestParam(required = false) Integer page,
+                                             @RequestParam(required = false) Integer size,
+                                             @RequestParam(required = false) String direction,
+                                             @RequestParam(required = false) String sortBy)
             throws NotFoundException;
 
     @GetMapping("/accounts/{username}")
     ResponseEntity<AccountDto> readAccount(@RequestHeader(AUTHORIZATION) String token,
-                                           @PathVariable(value = "username") String username)
+                                           @PathVariable String username)
             throws NotFoundException;
 
     @DeleteMapping("/accounts")
@@ -75,7 +75,7 @@ public interface AccountMicroserviceFeignClient {
 
     @GetMapping("/accounts/{username}/profileImage")
     ResponseEntity<String> readAccountProfileImage(@RequestHeader(AUTHORIZATION) String token,
-                                                   @PathVariable(value = "username") String username)
+                                                   @PathVariable String username)
             throws IOException;
 
     @GetMapping("/accounts/self/profileImage")
@@ -116,7 +116,7 @@ public interface AccountMicroserviceFeignClient {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<String> changeImage(@RequestHeader(AUTHORIZATION) String token,
-                                       @PathVariable String username, @RequestPart("file") MultipartFile file)
+                                       @PathVariable String username, @RequestPart MultipartFile file)
             throws NotFoundException, IOException, AlreadyExistException;
 
     @PostMapping("/accounts/authentication/login")
@@ -137,10 +137,10 @@ public interface AccountMicroserviceFeignClient {
 
     @GetMapping("/permissions")
     ResponseEntity<PermissionsDto> readPermissions(@RequestHeader(AUTHORIZATION) String token,
-                                                   @RequestParam(defaultValue = "0") int page,
-                                                   @RequestParam(defaultValue = "20") int size,
-                                                   @RequestParam(defaultValue = "NONE") String direction,
-                                                   @RequestParam(defaultValue = "NONE") String sortBy);
+                                                   @RequestParam(required = false) Integer page,
+                                                   @RequestParam(required = false) Integer size,
+                                                   @RequestParam(required = false) String direction,
+                                                   @RequestParam(required = false) String sortBy);
 
     @GetMapping("/permissions/{name}")
     ResponseEntity<PermissionDto> readPermission(@RequestHeader(AUTHORIZATION) String token,
@@ -166,10 +166,10 @@ public interface AccountMicroserviceFeignClient {
 
     @GetMapping("/roles")
     ResponseEntity<RolesDto> readRoles(@RequestHeader(AUTHORIZATION) String token,
-                                       @RequestParam(defaultValue = "0") int page,
-                                       @RequestParam(defaultValue = "20") int size,
-                                       @RequestParam(defaultValue = "NONE") String direction,
-                                       @RequestParam(defaultValue = "NONE") String sortBy);
+                                       @RequestParam(required = false) Integer page,
+                                       @RequestParam(required = false) Integer size,
+                                       @RequestParam(required = false) String direction,
+                                       @RequestParam(required = false) String sortBy);
 
     @GetMapping("/roles/{role-name}")
     ResponseEntity<RoleDto> readRole(@RequestHeader(AUTHORIZATION) String token,

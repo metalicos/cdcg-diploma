@@ -49,7 +49,7 @@ public class DeviceScheduleController implements DeviceSchedulingApi {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteScheduleById(@RequestHeader(AUTHORIZATION) String token,
-                                                     @PathVariable("id") Long id) {
+                                                     @PathVariable Long id) {
         return deviceFeignClient.deleteScheduleById(token, id);
     }
 }

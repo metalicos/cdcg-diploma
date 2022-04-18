@@ -63,6 +63,8 @@ public class ExceptionHandlerController implements ExceptionHandlerApi {
     @ExceptionHandler(FeignException.class)
     public ResponseEntity<RestError> handleFeignStatusException(FeignException e, HttpServletResponse response)
             throws JsonProcessingException {
+        var status = HttpStatus.valueOf(e.status());
+        log.error("Feign exception. Status={} Reason={}", status, status.getReasonPhrase(), e);
         response.setStatus(e.status());
         return switch (e.status()) {
             case 401 -> buildResponse(UNAUTHORIZED, UNAUTHORIZED_MSG, "Authentication failed: " + e.getMessage());
@@ -77,11 +79,13 @@ public class ExceptionHandlerController implements ExceptionHandlerApi {
 
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<RestError> noHandlerFoundException(NullPointerException exception) {
+        log.error("NullPointerException ", exception);
         return buildResponse(NO_CONTENT, NO_CONTENT_MSG, exception.getMessage());
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<RestError> validationException(ConstraintViolationException exception) {
+        log.error("ConstraintViolationException ", exception);
         return buildResponse(BAD_REQUEST, BAD_REQUEST_MSG, exception.getConstraintViolations()
                 .stream().map(v -> invalidParameter(v.getInvalidValue(), v.getMessage()))
                 .collect(Collectors.toSet()).toString());
@@ -89,6 +93,7 @@ public class ExceptionHandlerController implements ExceptionHandlerApi {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<RestError> httpClientErrorException(MethodArgumentNotValidException exception) {
+        log.error("MethodArgumentNotValidException ", exception);
         return buildResponse(BAD_REQUEST, BAD_REQUEST_MSG, exception.getBindingResult().getFieldErrors()
                 .stream().map(v -> invalidParameter(v.getRejectedValue(), v.getDefaultMessage()))
                 .collect(Collectors.toSet()).toString());
@@ -96,72 +101,86 @@ public class ExceptionHandlerController implements ExceptionHandlerApi {
 
     @ExceptionHandler(HttpClientErrorException.class)
     public ResponseEntity<RestError> httpClientErrorException(HttpClientErrorException exception) {
+        log.error("HttpClientErrorException ", exception);
         return buildResponse(BAD_REQUEST, BAD_REQUEST_MSG, "Clients request is of the wrong format. " + exception.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<RestError> httpClientErrorException(MethodArgumentTypeMismatchException exception) {
+        log.error("MethodArgumentTypeMismatchException ", exception);
         return buildResponse(BAD_REQUEST, BAD_REQUEST_MSG, String.format("Invalid url parameter '%s' has been sent. %s",
                 exception.getName(), exception.getMessage()));
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<RestError> httpClientErrorException(MissingServletRequestParameterException exception) {
+        log.error("MissingServletRequestParameterException ", exception);
         return buildResponse(BAD_REQUEST, BAD_REQUEST_MSG, "Request parameter is missing" + exception);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<RestError> httpClientErrorException(HttpMessageNotReadableException exception) {
+        log.error("HttpMessageNotReadableException ", exception);
         return buildResponse(BAD_REQUEST, BAD_REQUEST_MSG, exception.getMessage());
     }
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<RestError> noHandlerFoundException(AuthenticationException exception) {
+        log.error("AuthenticationException ", exception);
         return buildResponse(UNAUTHORIZED, UNAUTHORIZED_MSG, "Authentication failed: " + exception.getMessage());
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
     public ResponseEntity<RestError> noHandlerFoundException(ExpiredJwtException exception) {
+        log.error("ExpiredJwtException ", exception);
         return buildResponse(UNAUTHORIZED, UNAUTHORIZED_MSG, "JWT token is expired: " + exception.getMessage());
     }
 
     @ExceptionHandler(SignatureException.class)
     public ResponseEntity<RestError> noHandlerFoundException(SignatureException exception) {
+        log.error("SignatureException ", exception);
         return buildResponse(UNAUTHORIZED, UNAUTHORIZED_MSG, "Bad JWT Signature: " + exception.getMessage());
     }
 
     @ExceptionHandler(MalformedJwtException.class)
     public ResponseEntity<RestError> noHandlerFoundException(MalformedJwtException exception) {
+        log.error("MalformedJwtException ", exception);
         return buildResponse(UNAUTHORIZED, UNAUTHORIZED_MSG, "Malformed Jwt: " + exception.getMessage());
     }
 
     @ExceptionHandler(UnsupportedJwtException.class)
     public ResponseEntity<RestError> noHandlerFoundException(UnsupportedJwtException exception) {
+        log.error("UnsupportedJwtException ", exception);
         return buildResponse(UNAUTHORIZED, UNAUTHORIZED_MSG, "Unsupported Jwt: " + exception.getMessage());
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<RestError> noHandlerFoundException(AccessDeniedException exception) {
+        log.error("AccessDeniedException ", exception);
         return buildResponse(FORBIDDEN, ACCESS_DENIED_MSG, "You have no permission to access the resource ..." + exception.getMessage());
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<RestError> noHandlerFoundException(NoHandlerFoundException exception) {
+        log.error("NoHandlerFoundException ", exception);
         return buildResponse(NOT_FOUND, NOT_FOUND_MSG, "Resource not found for " + exception.getRequestURL());
     }
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<RestError> noHandlerFoundException(NotFoundException exception) {
+        log.error("NotFoundException ", exception);
         return buildResponse(NOT_FOUND, NOT_FOUND_MSG, exception.getMessage());
     }
 
     @ExceptionHandler(AlreadyExistException.class)
     public ResponseEntity<RestError> noHandlerFoundException(AlreadyExistException exception) {
+        log.error("AlreadyExistException ", exception);
         return buildResponse(CONFLICT, CONFLICT_MSG, exception.getMessage());
     }
 
     @ExceptionHandler(InternalException.class)
     public ResponseEntity<RestError> httpClientErrorException(InternalException exception) {
+        log.error("InternalException ", exception);
         return buildResponse(INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR_MSG, exception.getMessage());
     }
 

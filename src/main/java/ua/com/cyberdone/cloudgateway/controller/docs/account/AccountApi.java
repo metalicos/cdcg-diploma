@@ -36,7 +36,7 @@ public interface AccountApi {
             "'direction' (ASC / DESC) / filter by word 'sortBy'",
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = AccountsDto.class)))
-    ResponseEntity<AccountsDto> readAccounts(String token, int page, int size, String direction, String sortBy)
+    ResponseEntity<AccountsDto> readAccounts(String token, Integer page, Integer size, String direction, String sortBy)
             throws NotFoundException;
 
     @Operation(summary = "Read account", description = "Return account by username")

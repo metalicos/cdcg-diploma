@@ -1,19 +1,26 @@
 package ua.com.cyberdone.cloudgateway.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 import ua.com.cyberdone.cloudgateway.model.devicemicroservice.DeviceMetadataDto;
 import ua.com.cyberdone.cloudgateway.model.devicemicroservice.DeviceType;
 import ua.com.cyberdone.cloudgateway.model.devicemicroservice.RegularScheduleDto;
 import ua.com.cyberdone.cloudgateway.model.devicemicroservice.RegularScheduleUpdateDto;
+import ua.com.cyberdone.cloudgateway.model.devicemicroservice.delegation.DelegatedDeviceControlDto;
+import ua.com.cyberdone.cloudgateway.model.devicemicroservice.delegation.DelegationStatus;
+import ua.com.cyberdone.cloudgateway.model.devicemicroservice.delegation.PageableDelegatedDeviceControlDto;
 import ua.com.cyberdone.cloudgateway.model.devicemicroservice.hydroponic.DatabasePhCalibrationDto;
 import ua.com.cyberdone.cloudgateway.model.devicemicroservice.hydroponic.DatabaseTdsCalibrationDto;
 import ua.com.cyberdone.cloudgateway.model.devicemicroservice.hydroponic.HydroponicCalibrationDataDto;
@@ -26,11 +33,14 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static ua.com.cyberdone.cloudgateway.constant.ControllerConstantUtils.DELEGATION_STATUS_PARAMETER;
+import static ua.com.cyberdone.cloudgateway.constant.ControllerConstantUtils.DEVICE_UUID_PARAMETER;
+import static ua.com.cyberdone.cloudgateway.constant.ControllerConstantUtils.USERNAME_PARAMETER;
 
 @FeignClient(value = "cyber-done-device-microservice")
 public interface DeviceMicroserviceFeignClient {
 
-    //          METADATA CONTROLLER CALLS
+    /* METADATA CONTROLLER CALLS */
     @GetMapping("/device/metadata")
     ResponseEntity<DeviceMetadataDto> getMetadataByUuid(@RequestHeader(AUTHORIZATION) String token,
                                                         @RequestParam String uuid);
@@ -40,10 +50,17 @@ public interface DeviceMicroserviceFeignClient {
                                                               @RequestParam Long userId);
 
     @PutMapping("/device/metadata")
-    ResponseEntity<String> updateMetadata(@RequestHeader(AUTHORIZATION) String token,
-                                          @RequestParam String uuid,
-                                          @RequestParam String name,
-                                          @RequestParam String description);
+    ResponseEntity<DeviceMetadataDto> updateMetadata(@RequestHeader(AUTHORIZATION) String token,
+                                                     @RequestParam String uuid,
+                                                     @RequestParam String name,
+                                                     @RequestParam String description);
+
+    @PutMapping(value= "/device/metadata/{uuid}/image",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<DeviceMetadataDto> updateDeviceImage(@RequestHeader(AUTHORIZATION) String token,
+                                                        @PathVariable String uuid,
+                                                        @RequestPart("file") MultipartFile deviceImage);
 
     @PostMapping("/device/metadata")
     ResponseEntity<DeviceMetadataDto> createMetadata(@RequestHeader(AUTHORIZATION) String token,
@@ -64,7 +81,7 @@ public interface DeviceMicroserviceFeignClient {
     ResponseEntity<String> linkMetadataToUser(@RequestHeader(AUTHORIZATION) String token,
                                               @RequestParam String uuid, @RequestParam Long userId);
 
-    //          SCHEDULE CONTROLLER CALLS
+    /* SCHEDULE CONTROLLER CALLS */
 
     @GetMapping("/device/regular/schedules")
     ResponseEntity<List<RegularScheduleDto>> getSchedulesByKey(@RequestHeader(AUTHORIZATION) String token,
@@ -83,40 +100,40 @@ public interface DeviceMicroserviceFeignClient {
     ResponseEntity<String> deleteScheduleById(@RequestHeader(AUTHORIZATION) String token,
                                               @PathVariable("id") Long id);
 
-    //        HYDROPONIC DATA CALLS
+    /* HYDROPONIC DATA CALLS */
 
     @GetMapping("/hydroponic/data/last")
     ResponseEntity<List<HydroponicDataDto>> getLastDataInDeviceWithUUID(@RequestHeader(AUTHORIZATION) String token,
                                                                         @RequestParam String uuid,
-                                                                        @RequestParam Integer page,
-                                                                        @RequestParam Integer limit);
+                                                                        @RequestParam(required = false) Integer page,
+                                                                        @RequestParam(required = false) Integer limit);
 
     @DeleteMapping("/hydroponic/data")
     ResponseEntity<Void> deleteAllDataInDeviceWithUUID(@RequestHeader(AUTHORIZATION) String token,
                                                        @RequestParam Long id);
 
-    //        HYDROPONIC CALIBRATION CALLS
+    /* HYDROPONIC CALIBRATION CALLS */
 
 
     @GetMapping("/hydroponic/calibration-data/last")
     ResponseEntity<List<HydroponicCalibrationDataDto>> getLastCalibrationDataInDeviceWithUuid(@RequestHeader(AUTHORIZATION) String token,
                                                                                               @RequestParam String uuid,
-                                                                                              @RequestParam Integer page,
-                                                                                              @RequestParam Integer limit);
+                                                                                              @RequestParam(required = false) Integer page,
+                                                                                              @RequestParam(required = false) Integer limit);
 
     @DeleteMapping("/hydroponic/calibration-data")
     ResponseEntity<Void> deleteCalibrationDataByUuid(@RequestHeader(AUTHORIZATION) String token,
                                                      @RequestParam String uuid);
 
-    //        HYDROPONIC SETTINGS CALLS
+    /* HYDROPONIC SETTINGS CALLS */
 
     @GetMapping("/hydroponic/settings/last")
     ResponseEntity<List<HydroponicSettingsDto>> getLastSettingsInDeviceWithUuid(@RequestHeader(AUTHORIZATION) String token,
                                                                                 @RequestParam String uuid,
-                                                                                @RequestParam(defaultValue = "0") Integer page,
-                                                                                @RequestParam(defaultValue = "15") Integer limit);
+                                                                                @RequestParam(required = false) Integer page,
+                                                                                @RequestParam(required = false) Integer limit);
 
-    //        HYDROPONIC SETTING TEMPLATE CALLS
+    /* HYDROPONIC SETTING TEMPLATE CALLS */
 
     @GetMapping("/hydroponic/setting/template/last")
     ResponseEntity<List<HydroponicSettingsDto>> getLastSettingTemplate(
@@ -134,7 +151,7 @@ public interface DeviceMicroserviceFeignClient {
     ResponseEntity<String> deleteHydroponicSettingTemplate(
             @RequestHeader(AUTHORIZATION) String token, @PathVariable Long templateId);
 
-    //        CONTROL HYDROPONICS CALLS
+    /* CONTROL HYDROPONICS CALLS */
 
     @PutMapping("/hydroponic/control/update/time")
     ResponseEntity<String> updateTime(@RequestHeader(AUTHORIZATION) String token,
@@ -252,4 +269,43 @@ public interface DeviceMicroserviceFeignClient {
     @PutMapping("/hydroponic/control/calibrate/tds/database")
     ResponseEntity<String> updateTdsFromDatabaseData(@RequestHeader(AUTHORIZATION) String token,
                                                      @RequestBody DatabaseTdsCalibrationDto dto);
+
+    /* DEVICE CONTROL DELEGATION */
+
+    @GetMapping("/delegated-device-controls/self")
+    ResponseEntity<PageableDelegatedDeviceControlDto> getDelegatedDeviceControlForUserByToken(
+            @RequestHeader(AUTHORIZATION) String token,
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) String direction,
+            @RequestParam(required = false) String sortBy);
+
+    @GetMapping("/delegated-device-controls/list")
+    ResponseEntity<PageableDelegatedDeviceControlDto> getAllDelegatedDeviceControlByDeviceUuidAndOwnerToken(
+            @RequestHeader(AUTHORIZATION) String token,
+            @RequestParam(DEVICE_UUID_PARAMETER) String deviceUuid,
+            @RequestParam(DELEGATION_STATUS_PARAMETER) DelegationStatus delegationStatus,
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) String direction,
+            @RequestParam(required = false) String sortBy);
+
+    @GetMapping("/delegated-device-controls")
+    ResponseEntity<DelegatedDeviceControlDto> getDelegatedDeviceControlForUser(
+            @RequestHeader(AUTHORIZATION) String token,
+            @RequestParam(USERNAME_PARAMETER) String username,
+            @RequestParam(DEVICE_UUID_PARAMETER) String deviceUuid);
+
+    @PatchMapping("/delegated-device-controls")
+    ResponseEntity<String> updateDelegationStatus(
+            @RequestHeader(AUTHORIZATION) String token,
+            @RequestParam(DEVICE_UUID_PARAMETER) String deviceUuid,
+            @RequestParam(USERNAME_PARAMETER) String username,
+            @RequestParam(DELEGATION_STATUS_PARAMETER) DelegationStatus delegationStatus);
+
+    @PostMapping("/delegated-device-controls")
+    ResponseEntity<DelegatedDeviceControlDto> createDelegatedDeviceControl(
+            @RequestHeader(AUTHORIZATION) String token,
+            @RequestParam(required = false) String comment,
+            @RequestParam(DEVICE_UUID_PARAMETER) String deviceUuid);
 }

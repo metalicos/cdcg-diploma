@@ -22,7 +22,7 @@ public interface PermissionApi {
             "order 'direction' (ASC / DESC) / filter by word 'sortBy'",
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = PermissionsDto.class)))
-    ResponseEntity<PermissionsDto> readPermissions(String token, int page, int size, String direction, String sortBy);
+    ResponseEntity<PermissionsDto> readPermissions(String token, Integer page, Integer size, String direction, String sortBy);
 
     @Operation(summary = "Read permission", description = "Return single permission by name")
     @ApiResponse(responseCode = "200", description = "Return single permission by name",

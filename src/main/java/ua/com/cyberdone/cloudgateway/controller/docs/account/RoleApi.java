@@ -22,7 +22,7 @@ public interface RoleApi {
             "'direction' (ASC / DESC) / filter by word 'sortBy'",
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = RolesDto.class)))
-    ResponseEntity<RolesDto> readRoles(String token, int page, int size, String direction, String sortBy);
+    ResponseEntity<RolesDto> readRoles(String token, Integer page, Integer size, String direction, String sortBy);
 
     @Operation(summary = "Read role", description = "Return role by role name")
     @ApiResponse(responseCode = "200", description = "Return role by role name",

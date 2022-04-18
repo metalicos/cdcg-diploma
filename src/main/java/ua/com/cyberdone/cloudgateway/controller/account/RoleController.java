@@ -29,10 +29,10 @@ public class RoleController implements RoleApi {
 
     @GetMapping
     public ResponseEntity<RolesDto> readRoles(@RequestHeader(AUTHORIZATION) String token,
-                                              @RequestParam(defaultValue = "0") int page,
-                                              @RequestParam(defaultValue = "20") int size,
-                                              @RequestParam(defaultValue = "NONE") String direction,
-                                              @RequestParam(defaultValue = "NONE") String sortBy) {
+                                              @RequestParam(required = false) Integer page,
+                                              @RequestParam(required = false) Integer size,
+                                              @RequestParam(required = false) String direction,
+                                              @RequestParam(required = false) String sortBy) {
         return accountFeignClient.readRoles(token, page, size, direction, sortBy);
     }
 

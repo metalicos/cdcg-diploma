@@ -5,6 +5,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class Regex {
     /* Regex Patterns */
+    public static final String UUID_PATTERN = "^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$";
     public static final String EMAIL_PATTERN =
             "^[A-z0-9.-]+[A-z0-9]@[A-z0-9][A-z0-9.-]+\\.[A-z]{2,}$";
     public static final String PASSWORD_PATTERN =
@@ -18,6 +19,8 @@ public class Regex {
     public static final String SORT_BY_PATTERN = "^(NONE|(?i)[\\p{L}.,'-]+)$";
     public static final String SORT_DIRECTION_PATTERN = "^(ASC)|(DESC)$";
     /* Constraints Fail Messages*/
+    public static final String SORT_DIRECTION_FAILED_MSG = "Direction is invalid. Should be ASC or DESC.";
+    public static final String UUID_FAILED_MSG = "UUID is not valid. Cause: not a UUID";
     public static final String EMAIL_FAIL_MESSAGE = "Email is invalid";
     public static final String PASSWORD_FAIL_MESSAGE = "Password is invalid";
     public static final String TOKEN_FAIL_MESSAGE = "Token is invalid";
@@ -38,4 +41,9 @@ public class Regex {
             "Sort by can be only NONE - not to sort, or single word with allowed ''', '-' symbols if needed.";
     public static final String SORTING_DIRECTION_FAIL_MESSAGE =
             "Sorting direction can be only ASC, DESC or NONE - will take a default one.";
+    public static final String VALUE_IS_BLANK_MSG = "Value is not valid. Cause: blank";
+    public static final String VALUE_IS_NULL_MSG = "Value is not valid. Cause: null";
+    public static final String VALUE_NOT_NUMBER_MSG = "Value is not valid. Cause: not number";
+    public static final String NOT_POSITIVE_MSG = "Value is not valid. Cause: not positive";
+    public static final String NOT_POSITIVE_OR_ZERO_MSG = "Value is not valid. Cause: not zero or not positive number";
 }

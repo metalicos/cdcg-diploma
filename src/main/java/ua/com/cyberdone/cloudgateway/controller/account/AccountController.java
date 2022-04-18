@@ -45,10 +45,10 @@ public class AccountController implements AccountApi {
 
     @GetMapping
     public ResponseEntity<AccountsDto> readAccounts(@RequestHeader(AUTHORIZATION) String token,
-                                                    @RequestParam(defaultValue = "0") int page,
-                                                    @RequestParam(defaultValue = "20") int size,
-                                                    @RequestParam(defaultValue = "NONE") String direction,
-                                                    @RequestParam(defaultValue = "NONE") String sortBy)
+                                                    @RequestParam(required = false) Integer page,
+                                                    @RequestParam(required = false) Integer size,
+                                                    @RequestParam(required = false) String direction,
+                                                    @RequestParam(required = false) String sortBy)
             throws NotFoundException {
         return accountFeignClient.readAccounts(token, page, size, direction, sortBy);
     }
