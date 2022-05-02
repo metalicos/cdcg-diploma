@@ -5,7 +5,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -55,7 +54,7 @@ public interface DeviceMicroserviceFeignClient {
                                                      @RequestParam String name,
                                                      @RequestParam String description);
 
-    @PutMapping(value= "/device/metadata/{uuid}/image",
+    @PutMapping(value = "/device/metadata/{uuid}/image",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<DeviceMetadataDto> updateDeviceImage(@RequestHeader(AUTHORIZATION) String token,
@@ -107,6 +106,13 @@ public interface DeviceMicroserviceFeignClient {
                                                                         @RequestParam String uuid,
                                                                         @RequestParam(required = false) Integer page,
                                                                         @RequestParam(required = false) Integer limit);
+
+    @GetMapping("/hydroponic/data/range")
+    ResponseEntity<List<HydroponicDataDto>> getLastDataByUuid(@RequestHeader(AUTHORIZATION) String token,
+                                                              @RequestParam String uuid,
+                                                              @RequestParam String fromDate,
+                                                              @RequestParam String toDate,
+                                                              @RequestParam Integer dataStep);
 
     @DeleteMapping("/hydroponic/data")
     ResponseEntity<Void> deleteAllDataInDeviceWithUUID(@RequestHeader(AUTHORIZATION) String token,
@@ -270,6 +276,11 @@ public interface DeviceMicroserviceFeignClient {
     ResponseEntity<String> updateTdsFromDatabaseData(@RequestHeader(AUTHORIZATION) String token,
                                                      @RequestBody DatabaseTdsCalibrationDto dto);
 
+    @PutMapping("/hydroponic/control/update/pumps/{pumpNumber}/polarity")
+    ResponseEntity<String> updatePumpPolarity(@RequestHeader(AUTHORIZATION) String token,
+                                              @RequestParam String uuid,
+                                              @PathVariable String pumpNumber);
+
     /* DEVICE CONTROL DELEGATION */
 
     @GetMapping("/delegated-device-controls/self")
@@ -296,7 +307,7 @@ public interface DeviceMicroserviceFeignClient {
             @RequestParam(USERNAME_PARAMETER) String username,
             @RequestParam(DEVICE_UUID_PARAMETER) String deviceUuid);
 
-    @PatchMapping("/delegated-device-controls")
+    @PutMapping("/delegated-device-controls")
     ResponseEntity<String> updateDelegationStatus(
             @RequestHeader(AUTHORIZATION) String token,
             @RequestParam(DEVICE_UUID_PARAMETER) String deviceUuid,

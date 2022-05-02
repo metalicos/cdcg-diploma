@@ -2,21 +2,14 @@ package ua.com.cyberdone.cloudgateway.model.accountmicroservice.role;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import ua.com.cyberdone.cloudgateway.model.PageableDto;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
-import java.util.Set;
+import java.io.Serial;
+import java.io.Serializable;
 
-import static ua.com.cyberdone.cloudgateway.constant.Regex.SORTING_DIRECTION_FAIL_MESSAGE;
-import static ua.com.cyberdone.cloudgateway.constant.Regex.SORT_DIRECTION_PATTERN;
-import static ua.com.cyberdone.cloudgateway.constant.Regex.SORT_BY_FAIL_MESSAGE;
-import static ua.com.cyberdone.cloudgateway.constant.Regex.SORT_BY_PATTERN;
-
-@Data
-@Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)
 @Schema(example = "{\n" +
         "    \"page\": 0,\n" +
         "    \"elementsOnThePage\": 1,\n" +
@@ -54,15 +47,11 @@ import static ua.com.cyberdone.cloudgateway.constant.Regex.SORT_BY_PATTERN;
         "        }\n" +
         "    ]\n" +
         "}")
-public class RolesDto {
-    private Integer page;
-    private Integer elementsOnThePage;
-    private Integer totallyPages;
-    private Integer foundElements;
-    private Long totallyElements;
-    @Pattern(regexp = SORT_BY_PATTERN, message = SORT_BY_FAIL_MESSAGE)
-    private String sortedBy;
-    @Pattern(regexp = SORT_DIRECTION_PATTERN, message = SORTING_DIRECTION_FAIL_MESSAGE)
-    private String sortDirection;
-    private Set<@Valid RoleDto> roles;
+@Getter
+@SuperBuilder
+@NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class RolesDto extends PageableDto<RoleDto> implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 66454333L;
 }

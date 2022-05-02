@@ -2,6 +2,7 @@ package ua.com.cyberdone.cloudgateway.controller.device.hydroponic;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -28,6 +29,15 @@ public class HydroponicDataController implements HydroponicDataApi {
                                                                                @RequestParam Integer page,
                                                                                @RequestParam Integer limit) {
         return deviceFeignClient.getLastDataInDeviceWithUUID(token, uuid, page, limit);
+    }
+
+    @GetMapping("/range")
+    public ResponseEntity<List<HydroponicDataDto>> getLastDataInDeviceWithUuid(@RequestHeader(AUTHORIZATION) String token,
+                                                                               @RequestParam String uuid,
+                                                                               @RequestParam String fromDate,
+                                                                               @RequestParam String toDate,
+                                                                               @RequestParam int dataStep) {
+        return deviceFeignClient.getLastDataByUuid(token, uuid, fromDate, toDate, dataStep);
     }
 
     @DeleteMapping

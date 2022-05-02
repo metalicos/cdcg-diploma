@@ -33,23 +33,29 @@ public interface HydroponicControlApi {
                     schema = @Schema(implementation = String.class, example = ControllerConstantUtils.OK)))
     ResponseEntity<String> updateAutoTime(String token, String uuid, String value);
 
-    @Operation(summary = "Update hydroponic ph-up pump mode", description = "Send update ph-up pump mode (RUN_LEFT | STOP | RUN_RIGHT) command to hydroponic")
-    @ApiResponse(responseCode = "200", description = "Send update ph-up pump mode (RUN_LEFT | STOP | RUN_RIGHT) command to hydroponic",
+    @Operation(summary = "Update hydroponic ph-up pump mode", description = "Send update ph-up pump mode (RUN_LEFT = 0 | STOP = 2 | RUN_RIGHT = 1) command to hydroponic")
+    @ApiResponse(responseCode = "200", description = "Send update ph-up pump mode (RUN_LEFT = 0 | STOP = 2 | RUN_RIGHT = 1) command to hydroponic",
             content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE,
                     schema = @Schema(implementation = String.class, example = ControllerConstantUtils.OK)))
     ResponseEntity<String> updatePhUpPumpStatus(String token, String uuid, String value);
 
-    @Operation(summary = "Update hydroponic ph-down pump mode", description = "Send update ph-down pump mode (RUN_LEFT | STOP | RUN_RIGHT) command to hydroponic")
-    @ApiResponse(responseCode = "200", description = "Send update ph-down pump mode (RUN_LEFT | STOP | RUN_RIGHT) command to hydroponic",
+    @Operation(summary = "Update hydroponic ph-down pump mode", description = "Send update ph-down pump mode (RUN_LEFT = 0 | STOP = 2 | RUN_RIGHT = 1) command to hydroponic")
+    @ApiResponse(responseCode = "200", description = "Send update ph-down pump mode (RUN_LEFT = 0 | STOP = 2 | RUN_RIGHT = 1) command to hydroponic",
             content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE,
                     schema = @Schema(implementation = String.class, example = ControllerConstantUtils.OK)))
     ResponseEntity<String> updatePhDownPumpStatus(String token, String uuid, String value);
 
-    @Operation(summary = "Update hydroponic tds pump mode", description = "Send update tds pump mode (RUN_LEFT | STOP | RUN_RIGHT) command to hydroponic")
-    @ApiResponse(responseCode = "200", description = "Send update tds pump mode (RUN_LEFT | STOP | RUN_RIGHT) command to hydroponic",
+    @Operation(summary = "Update hydroponic tds pump mode", description = "Send update tds pump mode (RUN_LEFT = 0 | STOP = 2 | RUN_RIGHT = 1) command to hydroponic")
+    @ApiResponse(responseCode = "200", description = "Send update tds pump mode (RUN_LEFT = 0 | STOP = 2 | RUN_RIGHT = 1) command to hydroponic",
             content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE,
                     schema = @Schema(implementation = String.class, example = ControllerConstantUtils.OK)))
     ResponseEntity<String> updateTdsPumpStatus(String token, String uuid, String value);
+
+    @Operation(summary = "Update polarity of pump", description = "Update pump`s polarity. For example if pump is rotating left, then after the change it will be rotating in right direction.")
+    @ApiResponse(responseCode = "200", description = "Update pump`s polarity. For example if pump is rotating left, then after the change it will be rotating in right direction.",
+            content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE,
+                    schema = @Schema(implementation = String.class, example = ControllerConstantUtils.OK)))
+    ResponseEntity<String> updatePumpPolarity(String token, String uuid, String pumpNumber);
 
     @Operation(summary = "Restart hydroponic microcontroller", description = "Restart hydroponic microcontroller")
     @ApiResponse(responseCode = "200", description = "Restart hydroponic microcontroller",

@@ -2,6 +2,7 @@ package ua.com.cyberdone.cloudgateway.controller.device.hydroponic;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -49,13 +50,20 @@ public class HydroponicControlController implements HydroponicControlApi {
     @PutMapping("/update/pumps/phDown")
     public ResponseEntity<String> updatePhDownPumpStatus(@RequestHeader(AUTHORIZATION) String token,
                                                          @RequestParam String uuid, @RequestParam String value) {
-        return deviceFeignClient.updatePhUpPumpStatus(token, uuid, value);
+        return deviceFeignClient.updatePhDownPumpStatus(token, uuid, value);
     }
 
     @PutMapping("/update/pumps/tds")
     public ResponseEntity<String> updateTdsPumpStatus(@RequestHeader(AUTHORIZATION) String token,
                                                       @RequestParam String uuid, @RequestParam String value) {
         return deviceFeignClient.updateTdsPumpStatus(token, uuid, value);
+    }
+
+    @PutMapping("/update/pumps/{pumpNumber}/polarity")
+    public ResponseEntity<String> updatePumpPolarity(@RequestHeader(AUTHORIZATION) String token,
+                                                     @RequestParam String uuid,
+                                                     @PathVariable String pumpNumber) {
+        return deviceFeignClient.updatePumpPolarity(token, uuid, pumpNumber);
     }
 
     @PutMapping("/update/restart")
