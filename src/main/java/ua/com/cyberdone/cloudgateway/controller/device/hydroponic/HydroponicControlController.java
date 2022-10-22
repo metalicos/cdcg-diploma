@@ -2,6 +2,7 @@ package ua.com.cyberdone.cloudgateway.controller.device.hydroponic;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -132,10 +133,44 @@ public class HydroponicControlController implements HydroponicControlApi {
         return deviceFeignClient.updateSetupTdsValue(token, uuid, value);
     }
 
-    @PutMapping("/update/dispensers/recheck-time")
-    public ResponseEntity<String> updateRecheckDispensersAfterTime(@RequestHeader(AUTHORIZATION) String token,
-                                                                   @RequestParam String uuid, @RequestParam String value) {
-        return deviceFeignClient.updateRecheckDispensersAfterTime(token, uuid, value);
+    @PutMapping("/update/dispensers/tds/recheck-time")
+    public ResponseEntity<String> updateRecheckTdsDispensersAfterTime(@RequestHeader(AUTHORIZATION) String token,
+                                                                      @RequestParam String uuid,
+                                                                      @RequestParam String value) {
+        return deviceFeignClient.updateRecheckTdsDispensersAfterTime(token, uuid, value);
+    }
+
+    @PutMapping("/update/dispensers/ph/recheck-time")
+    public ResponseEntity<String> updateRecheckPhDispensersAfterTime(@RequestHeader(AUTHORIZATION) String token,
+                                                                     @RequestParam String uuid,
+                                                                     @RequestParam String value) {
+        return deviceFeignClient.updateRecheckPhDispensersAfterTime(token, uuid, value);
+    }
+
+    @PutMapping("/update/clear-impurity-calculation")
+    public ResponseEntity<String> updateClearImpurityCalculation(@RequestHeader(AUTHORIZATION) String token,
+                                                                 @RequestParam String uuid) {
+        return deviceFeignClient.updateClearImpurityCalculation(token, uuid);
+    }
+
+    @PutMapping("/update/calculate/start-solution-as-fertilizer")
+    public ResponseEntity<String> updateCalculateStartSolutionAsFertilizer(@RequestHeader(AUTHORIZATION) String token,
+                                                                           @RequestParam String uuid,
+                                                                           @RequestParam String value) {
+        return deviceFeignClient.updateCalculateStartSolutionAsFertilizer(token, uuid, value);
+    }
+
+    @PutMapping("/update/calculate/ph-regulation-as-fertilizer")
+    public ResponseEntity<String> updateCalculatePhRegulationAsFertilizer(@RequestHeader(AUTHORIZATION) String token,
+                                                                          @RequestParam String uuid,
+                                                                          @RequestParam String value) {
+        return deviceFeignClient.updateCalculateStartSolutionAsFertilizer(token, uuid, value);
+    }
+
+    @PutMapping("/update/manual-data-refresh")
+    public ResponseEntity<String> updateRequestFreshData(@RequestHeader(AUTHORIZATION) String token,
+                                                         @RequestParam String uuid) {
+        return deviceFeignClient.requestFreshData(token, uuid);
     }
 
     @PutMapping("/update/dose/ph/up")

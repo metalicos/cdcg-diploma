@@ -224,9 +224,33 @@ public interface DeviceMicroserviceFeignClient {
     ResponseEntity<String> updateSetupTdsValue(@RequestHeader(AUTHORIZATION) String token,
                                                @RequestParam String uuid, @RequestParam String value);
 
-    @PutMapping("/hydroponic/control/update/dispensers/recheck-time")
-    ResponseEntity<String> updateRecheckDispensersAfterTime(@RequestHeader(AUTHORIZATION) String token,
-                                                            @RequestParam String uuid, @RequestParam String value);
+    @PutMapping("/hydroponic/control/update/dispensers/tds/recheck-time")
+    ResponseEntity<String> updateRecheckTdsDispensersAfterTime(@RequestHeader(AUTHORIZATION) String token,
+                                                               @RequestParam String uuid,
+                                                               @RequestParam String value);
+
+    @PutMapping("/hydroponic/control/update/dispensers/ph/recheck-time")
+    ResponseEntity<String> updateRecheckPhDispensersAfterTime(@RequestHeader(AUTHORIZATION) String token,
+                                                              @RequestParam String uuid,
+                                                              @RequestParam String value);
+
+    @PutMapping("/hydroponic/control/update/clear-impurity-calculation")
+    ResponseEntity<String> updateClearImpurityCalculation(@RequestHeader(AUTHORIZATION) String token,
+                                                          @RequestParam String uuid);
+
+    @PutMapping("/hydroponic/control/update/calculate/start-solution-as-fertilizer")
+    ResponseEntity<String> updateCalculateStartSolutionAsFertilizer(@RequestHeader(AUTHORIZATION) String token,
+                                                                    @RequestParam String uuid,
+                                                                    @RequestParam String value);
+
+    @PutMapping("/hydroponic/control/update/calculate/ph-regulation-as-fertilizer")
+    ResponseEntity<String> updateCalculatePhRegulationAsFertilizer(@RequestHeader(AUTHORIZATION) String token,
+                                                                   @RequestParam String uuid,
+                                                                   @RequestParam String value);
+
+    @PutMapping("/hydroponic/control/update/manual-data-refresh")
+    ResponseEntity<String> requestFreshData(@RequestHeader(AUTHORIZATION) String token,
+                                            @RequestParam String uuid);
 
     @PutMapping("/hydroponic/control/update/dose/ph/up")
     ResponseEntity<String> updatePhUpDose(@RequestHeader(AUTHORIZATION) String token,

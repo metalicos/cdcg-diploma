@@ -123,11 +123,41 @@ public interface HydroponicControlApi {
                     schema = @Schema(implementation = String.class, example = ControllerConstantUtils.OK)))
     ResponseEntity<String> updateSetupTdsValue(String token, String uuid, String value);
 
-    @Operation(summary = "Change recheck dispensers time", description = "Change time to recheck dispensers after")
-    @ApiResponse(responseCode = "200", description = "Change time to recheck dispensers after",
+    @Operation(summary = "Change recheck TDS dispensers after seconds", description = "Change time (in seconds) to recheck TDS dispensers after")
+    @ApiResponse(responseCode = "200", description = "Change time (in seconds) to recheck TDS dispensers after",
             content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE,
                     schema = @Schema(implementation = String.class, example = ControllerConstantUtils.OK)))
-    ResponseEntity<String> updateRecheckDispensersAfterTime(String token, String uuid, String value);
+    ResponseEntity<String> updateRecheckTdsDispensersAfterTime(String token, String uuid, String value);
+
+    @Operation(summary = "Change recheck pH dispensers after seconds", description = "Change time (in seconds) to recheck pH dispensers after")
+    @ApiResponse(responseCode = "200", description = "Change time (in seconds) to recheck pH dispensers after",
+            content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE,
+                    schema = @Schema(implementation = String.class, example = ControllerConstantUtils.OK)))
+    ResponseEntity<String> updateRecheckPhDispensersAfterTime(String token, String uuid, String value);
+
+    @Operation(summary = "Clear impurity calculation", description = "Clear impurity calculation, so then fertiliserPpm = phRegulationPpm = startingSolutionPpm = 0")
+    @ApiResponse(responseCode = "200", description = "Clear impurity calculation, so then fertiliserPpm = phRegulationPpm = startingSolutionPpm = 0",
+            content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE,
+                    schema = @Schema(implementation = String.class, example = ControllerConstantUtils.OK)))
+    ResponseEntity<String> updateClearImpurityCalculation(String token, String uuid);
+
+    @Operation(summary = "Change flag CalculateStartSolutionAsFertilizer", description = "Update CalculateStartSolutionAsFertilizer value")
+    @ApiResponse(responseCode = "200", description = "Update CalculateStartSolutionAsFertilizer value",
+            content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE,
+                    schema = @Schema(implementation = String.class, example = ControllerConstantUtils.OK)))
+    ResponseEntity<String> updateCalculateStartSolutionAsFertilizer(String token, String uuid, String value);
+
+    @Operation(summary = "Change flag CalculatePhRegulationAsFertilizer", description = "Update CalculatePhRegulationAsFertilizer value")
+    @ApiResponse(responseCode = "200", description = "Update CalculatePhRegulationAsFertilizer value",
+            content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE,
+                    schema = @Schema(implementation = String.class, example = ControllerConstantUtils.OK)))
+    ResponseEntity<String> updateCalculatePhRegulationAsFertilizer(String token, String uuid, String value);
+
+    @Operation(summary = "Request fresh data", description = "Trigger send data function in hydroponic device")
+    @ApiResponse(responseCode = "200", description = "Trigger send data function in hydroponic device",
+            content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE,
+                    schema = @Schema(implementation = String.class, example = ControllerConstantUtils.OK)))
+    ResponseEntity<String> updateRequestFreshData(String token, String uuid);
 
     @Operation(summary = "Change dose for ph up pump one time injection", description = "Change dose for ph up pump one time injection")
     @ApiResponse(responseCode = "200", description = "Change dose for ph up pump one time injection",

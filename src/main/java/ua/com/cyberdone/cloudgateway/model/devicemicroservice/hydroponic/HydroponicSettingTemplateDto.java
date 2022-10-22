@@ -4,13 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class HydroponicSettingTemplateDto {
+public class HydroponicSettingTemplateDto implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 370000323L;
+
     private Long id;
     private String name;
     private String description;
@@ -23,8 +28,11 @@ public class HydroponicSettingTemplateDto {
     private Double phUpDoseMl;
     private Double phDownDoseMl;
     private Double fertilizerDoseMl;
-    private Long recheckDispensersAfterMs;
     private Long restartCounter;
+    private Long recheckPhDispensersAfterSeconds;
+    private Long recheckTdsDispensersAfterSeconds;
+    private Boolean calculateStartSolutionAsFertilizer;
+    private Boolean calculatePhRegulationAsFertilizer;
     private Boolean dispensersEnable;
     private Boolean sensorsEnable;
     private Boolean autotime;
